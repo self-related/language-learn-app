@@ -1,4 +1,6 @@
 import './App.css'
+import DictionarySection from './components/DictionarySection'
+import LearningSection from './components/LearningSection'
 
 function App() {
 
@@ -8,21 +10,9 @@ function App() {
             Language Learning App
         </nav>
 
-        <main>
-            <div>
-                <textarea placeholder='type a word or a phrase' 
-                    className='bg-[#505050] mt-4 mb-2 ml-2 px-2 py-1 w-[225px] resize-none'
-                />
-                <button></button>
-            </div>
-
-            <div>
-                <div
-                    className='bg-[#505050] my-2 ml-2 px-2 py-1 min-h-[70px] h-min w-[225px]'
-                >
-                </div>
-                <button></button>
-            </div>
+        <main className='px-2 pt-4 flex flex-col items-center md:items-start md:flex-row md:gap-12'>
+            <LearningSection />
+            <DictionarySection />
         </main>
     </>
     
