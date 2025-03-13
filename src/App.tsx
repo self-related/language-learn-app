@@ -10,7 +10,7 @@ function App() {
             Language Learning App
         </nav>
 
-        <main className='px-2 pt-4 flex flex-col items-center md:items-start md:flex-row md:gap-12'>
+        <main className='px-6 pt-4 flex flex-col items-center md:items-start md:flex-row md:gap-12'>
             <LearningSection />
             <DictionarySection />
         </main>
