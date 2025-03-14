@@ -1,21 +1,58 @@
 import { useState } from "react";
 
+interface Languages {
+    [key: string]: string;
+}
+
+// temp constant
+const languages: Languages = {
+    en: "English",
+    es: "Spanish",
+};
+
 export default function LearningSection() {
 
     const [autoTranslate, setAutoTranslate] = useState(true);
+    const [currentLang, setCurrentLang] = useState("en");
+    const [targetLang, setTargetLang] = useState("es");
 
     const handleautoTranslateCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) setAutoTranslate(true);
         else setAutoTranslate(false);
     };
 
+    const switchLangs = () => {
+        setCurrentLang(targetLang);
+        setTargetLang(currentLang);
+    };
+
     return (
         <div id="learning-section">
             
-            {/* Section Header */}
-            <h2 className='font-medium text-center'
+            {/* Header */}
+            <h2 className='font-medium text-center mb-4'
              >Add new words
             </h2>
+
+
+            {/* Lang switcher */ }
+            <div id="lang-switcher" className="mx-auto w-max">
+
+                <select name="current-lang" id="current-lang" value={currentLang} className="cursor-pointer" onChange={(e) => setCurrentLang(e.target.value)}>
+                    {
+                        Object.keys(languages).map((key) => (<option key={key} value={key}> {languages[key]} </option>))
+                    }
+                </select>
+                
+                <button onClick={switchLangs} className="mx-2 cursor-pointer hover:bg-[#606060]">&lt;-&gt;</button>
+                
+                <select name="target-lang" id="target-lang" value={targetLang} className="cursor-pointer" onChange={(e) => setTargetLang(e.target.value)} >
+                    {
+                        Object.keys(languages).map((key) => (<option key={key} value={key}>{languages[key]}</option>))
+                    }
+                </select>
+            </div>
+
 
             {/* User Input */}
             <div id="input-div">
@@ -38,6 +75,7 @@ export default function LearningSection() {
                 }
             </div>
 
+
             {/* Output */}
             <div id="output-div" className="mt-4">
                 <textarea id="output"
@@ -48,6 +86,7 @@ export default function LearningSection() {
                  >Add
                 </button>
             </div>
+            
 
             {/* More options from translator api */}
             <div id="more-options">
