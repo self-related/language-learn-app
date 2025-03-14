@@ -15,6 +15,8 @@ export default function LearningSection() {
     const [autoTranslate, setAutoTranslate] = useState(true);
     const [currentLang, setCurrentLang] = useState("en");
     const [targetLang, setTargetLang] = useState("es");
+    const [currentWord, setCurrentWord] = useState("");
+
 
     const handleautoTranslateCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) setAutoTranslate(true);
@@ -24,6 +26,10 @@ export default function LearningSection() {
     const switchLangs = () => {
         setCurrentLang(targetLang);
         setTargetLang(currentLang);
+    };
+
+    const handleUserInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setCurrentWord(event.target.value);
     };
 
     return (
@@ -56,7 +62,7 @@ export default function LearningSection() {
 
             {/* User Input */}
             <div id="input-div">
-                <textarea id="user-input" placeholder='type a word or a phrase' 
+                <textarea id="user-input" placeholder='type a word or a phrase' value={currentWord} onChange={handleUserInputChange} 
                     className='block bg-[#505050] hover:bg-[#606060] accent-orange-400 mt-4 mb-2 px-2 py-1 w-[225px] resize-none rounded-sm'
                 />
                 <label htmlFor="auto-translate" className="block ml-auto w-fit">
