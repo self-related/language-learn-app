@@ -2,7 +2,14 @@ import { useState } from "react";
 
 // temp type for dictionary
 interface Dictionary {
-    [word: string]: string,
+    [word: string]: Word,
+}
+
+// type for words
+interface Word {
+    name: string,
+    translation: string,
+    isLearned: boolean
 }
 
 export default function DictionarySection() {
