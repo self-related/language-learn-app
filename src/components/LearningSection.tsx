@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslateGoogleQuery } from "../redux/features/api/apiSlice";
 
 interface Languages {
     [key: string]: string;
@@ -16,7 +17,7 @@ export default function LearningSection() {
     const [currentLang, setCurrentLang] = useState("en");
     const [targetLang, setTargetLang] = useState("es");
     const [currentWord, setCurrentWord] = useState("");
-
+    const [query, setQuery] = useState("");
 
     const handleautoTranslateCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) setAutoTranslate(true);
@@ -30,7 +31,18 @@ export default function LearningSection() {
 
     const handleUserInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setCurrentWord(event.target.value);
+        if (autoTranslate) 
+            setQuery(event.target.value);
     };
+    
+    const handleTranslateButtonClick = () => {
+        setQuery(currentWord);
+    };
+
+    const skipQuery: boolean = query == "";
+    const {data, error, isLoading} = useTranslateGoogleQuery(query, { skip: skipQuery });
+
+    const translatedWord = data ? data[0][0][0] : "";
 
     return (
         <div id="learning-section">
@@ -74,7 +86,8 @@ export default function LearningSection() {
                 </label>
                 { 
                     autoTranslate == false 
-                    ? <button className='mt-1 px-2 block ml-auto bg-gray-700 hover:bg-gray-600 active:bg-gray-800 accent-orange-400 outline-orange-400 focus:outline-2 cursor-pointer rounded-sm'
+                    ? <button onClick={handleTranslateButtonClick}
+                        className='mt-1 px-2 block ml-auto bg-gray-700 hover:bg-gray-600 active:bg-gray-800 accent-orange-400 outline-orange-400 focus:outline-2 cursor-pointer rounded-sm'
                         >Translate
                       </button>
                     : ""
@@ -84,7 +97,7 @@ export default function LearningSection() {
 
             {/* Output */}
             <div id="output-div" className="mt-4">
-                <textarea id="output"
+                <textarea id="output" value={translatedWord}
                     className='bg-[#505050] hover:bg-[#606060] accent-orange-400 my-2 px-2 py-1 min-h-[70px] h-min w-[225px] rounded-sm resize-none'
                 />
 
