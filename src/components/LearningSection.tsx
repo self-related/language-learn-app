@@ -7,17 +7,41 @@ interface Languages {
 
 // temp constant
 const languages: Languages = {
+    auto: "Auto",
     en: "English",
+    "zh-CN": "Chinese (Simplified)",
+    "zh-TW": "Chinese (Traditional)",
+    cs: "Czech",
+    eo: "Esperanto",
+    nl: "Dutch",
+    et: "Estonian",
+    fi: "Finnish",
+    ga: "Irish",
+    it: "Italian",
+    ja: "Japanese",
+    kk: "Kazakh",
+    ko: "Korean",
+    la: "Latin",
+    mn: "Mongolian",
+    no: "Norwegian",
+    pl: "Polish",
+    ro: "Romanian",
+    ru: "Russian",
     es: "Spanish",
+    sv: "Swedish",
+    th: "Thai",
+    tr: "Turkish",
+    uk: "Ukrainian"
+
 };
 
 export default function LearningSection() {
 
     const [autoTranslate, setAutoTranslate] = useState(true);
-    const [currentLang, setCurrentLang] = useState("en");
-    const [targetLang, setTargetLang] = useState("es");
-    const [currentWord, setCurrentWord] = useState("");
-    const [query, setQuery] = useState("");
+    const [sourceLang, setSourceLang] = useState("auto");
+    const [targetLang, setTargetLang] = useState("en");
+    const [currentInput, setCurrentInput] = useState("");
+    const [sourceText, setSourceText] = useState("");
 
     const handleautoTranslateCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) setAutoTranslate(true);
@@ -25,22 +49,24 @@ export default function LearningSection() {
     };
 
     const switchLangs = () => {
-        setCurrentLang(targetLang);
-        setTargetLang(currentLang);
+        if (sourceLang === "auto")
+            return;
+        setSourceLang(targetLang);
+        setTargetLang(sourceLang);
     };
 
     const handleUserInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setCurrentWord(event.target.value);
+        setCurrentInput(event.target.value);
         if (autoTranslate) 
-            setQuery(event.target.value);
+            setSourceText(event.target.value);
     };
     
     const handleTranslateButtonClick = () => {
-        setQuery(currentWord);
+        setSourceText(currentInput);
     };
 
-    const skipQuery: boolean = query == "";
-    const {data, error, isLoading} = useTranslateGoogleQuery(query, { skip: skipQuery });
+    const skipQuery: boolean = sourceText == "";
+    const {data, error, isLoading} = useTranslateGoogleQuery({sourceLang: sourceLang, targetLang, sourceText}, { skip: skipQuery });
 
     const translatedWord = data ? data[0][0][0] : "";
 
@@ -56,7 +82,7 @@ export default function LearningSection() {
             {/* Lang switcher */ }
             <div id="lang-switcher" className="mx-auto w-max">
 
-                <select name="current-lang" id="current-lang" value={currentLang} className="cursor-pointer" onChange={(e) => setCurrentLang(e.target.value)}>
+                <select name="current-lang" id="current-lang" value={sourceLang} className="cursor-pointer w-[6rem] text-center" onChange={(e) => setSourceLang(e.target.value)}>
                     {
                         Object.keys(languages).map((key) => (<option key={key} value={key}> {languages[key]} </option>))
                     }
@@ -64,9 +90,9 @@ export default function LearningSection() {
                 
                 <button onClick={switchLangs} className="mx-2 cursor-pointer hover:bg-[#606060]">&lt;-&gt;</button>
                 
-                <select name="target-lang" id="target-lang" value={targetLang} className="cursor-pointer" onChange={(e) => setTargetLang(e.target.value)} >
+                <select name="target-lang" id="target-lang" value={targetLang} className="cursor-pointer max-w-[6rem] text-center" onChange={(e) => setTargetLang(e.target.value)} >
                     {
-                        Object.keys(languages).map((key) => (<option key={key} value={key}>{languages[key]}</option>))
+                        Object.keys(languages).slice(1).map((key) => (<option key={key} value={key}>{languages[key]}</option>))
                     }
                 </select>
             </div>
@@ -74,10 +100,10 @@ export default function LearningSection() {
 
             {/* User Input */}
             <div id="input-div">
-                <textarea id="user-input" placeholder='type a word or a phrase' value={currentWord} onChange={handleUserInputChange} 
+                <textarea id="user-input" placeholder='type a word or a phrase' value={currentInput} onChange={handleUserInputChange} 
                     className='block bg-[#505050] hover:bg-[#606060] accent-orange-400 mt-4 mb-2 px-2 py-1 w-[225px] resize-none rounded-sm'
                 />
-                <label htmlFor="auto-translate" className="block ml-auto w-fit">
+                <label htmlFor="auto-translate" className="block ml-auto mr-2 w-fit">
                     Translate automatically?
                     
                     <input id="auto-translate" type="checkbox" checked={autoTranslate} onChange={handleautoTranslateCheckbox}
@@ -101,7 +127,7 @@ export default function LearningSection() {
                     className='bg-[#505050] hover:bg-[#606060] accent-orange-400 my-2 px-2 py-1 min-h-[70px] h-min w-[225px] rounded-sm resize-none'
                 />
 
-                <button className='px-2 block ml-auto bg-gray-700 hover:bg-gray-600 active:bg-gray-800 accent-orange-400 outline-orange-400 focus:outline-2 cursor-pointer rounded-sm'
+                <button className='px-2 block ml-auto mr-2 bg-gray-700 hover:bg-gray-600 active:bg-gray-800 accent-orange-400 outline-orange-400 focus:outline-2 cursor-pointer rounded-sm'
                  >Add
                 </button>
             </div>
