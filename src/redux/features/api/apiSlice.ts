@@ -21,4 +21,4 @@ export const apiSlice = createApi({
     })
 });
 
-export const { useTranslateGoogleQuery } = apiSlice;
+export const { useTranslateGoogleQuery, useLazyTranslateGoogleQuery } = apiSlice;

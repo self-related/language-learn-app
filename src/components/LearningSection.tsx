@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useTranslateGoogleQuery } from "../redux/features/api/apiSlice";
+import { useEffect, useState } from "react";
+import { useLazyTranslateGoogleQuery } from "../redux/features/api/apiSlice";
 
 interface Languages {
     [key: string]: string;
@@ -37,38 +37,55 @@ const languages: Languages = {
 
 export default function LearningSection() {
 
-    const [autoTranslate, setAutoTranslate] = useState(true);
+// states
+    const [autoTranslation, setAutoTranslation] = useState(true);
+
     const [sourceLang, setSourceLang] = useState("auto");
     const [targetLang, setTargetLang] = useState("en");
-    const [currentInput, setCurrentInput] = useState("");
     const [sourceText, setSourceText] = useState("");
 
-    const handleautoTranslateCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.checked) setAutoTranslate(true);
-        else setAutoTranslate(false);
+    
+
+// local variables
+    const [triggerQuery, {data}] = useLazyTranslateGoogleQuery();
+    const translatedWord = data ? data[0][0][0] : "";
+
+
+
+// callbacks
+    const handleAutoTranslateCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.checked) 
+            setAutoTranslation(true);
+        else 
+            setAutoTranslation(false);
     };
 
     const switchLangs = () => {
-        if (sourceLang === "auto")
+        if (sourceLang === "auto") {
             return;
+        }
         setSourceLang(targetLang);
         setTargetLang(sourceLang);
     };
 
     const handleUserInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setCurrentInput(event.target.value);
-        if (autoTranslate) 
-            setSourceText(event.target.value);
+        setSourceText(event.target.value);
     };
     
     const handleTranslateButtonClick = () => {
-        setSourceText(currentInput);
+        triggerQuery({ sourceLang, targetLang, sourceText }, true);
     };
 
-    const skipQuery: boolean = sourceText == "";
-    const {data, error, isLoading} = useTranslateGoogleQuery({sourceLang: sourceLang, targetLang, sourceText}, { skip: skipQuery });
 
-    const translatedWord = data ? data[0][0][0] : "";
+
+// auto-translation effect
+    useEffect(() => {
+        if (sourceText !== "" && autoTranslation) {
+            triggerQuery({ sourceLang, targetLang, sourceText }, true);
+        }
+    
+    }, [autoTranslation, sourceText, sourceLang, targetLang, triggerQuery]);
+
 
     return (
         <div id="learning-section">
@@ -100,18 +117,18 @@ export default function LearningSection() {
 
             {/* User Input */}
             <div id="input-div">
-                <textarea id="user-input" placeholder='type a word or a phrase' value={currentInput} onChange={handleUserInputChange} 
+                <textarea id="user-input" placeholder='type a word or a phrase' value={sourceText} onChange={handleUserInputChange} 
                     className='block bg-[#505050] hover:bg-[#606060] accent-orange-400 mt-4 mb-2 px-2 py-1 w-[225px] resize-none rounded-sm'
                 />
                 <label htmlFor="auto-translate" className="block ml-auto mr-2 w-fit">
                     Translate automatically?
                     
-                    <input id="auto-translate" type="checkbox" checked={autoTranslate} onChange={handleautoTranslateCheckbox}
+                    <input id="auto-translate" type="checkbox" checked={autoTranslation} onChange={handleAutoTranslateCheckbox}
                         className="ml-2 accent-orange-500"
                     />
                 </label>
                 { 
-                    autoTranslate == false 
+                    autoTranslation == false 
                     ? <button onClick={handleTranslateButtonClick}
                         className='mt-1 px-2 block ml-auto bg-gray-700 hover:bg-gray-600 active:bg-gray-800 accent-orange-400 outline-orange-400 focus:outline-2 cursor-pointer rounded-sm'
                         >Translate
