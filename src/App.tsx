@@ -1,6 +1,6 @@
 import './App.css'
 import DictionarySection from './components/DictionarySection'
-import LearningSection from './components/LearningSection'
+import TranslateSection from './components/TranslateSection'
 
 function App() {
 
@@ -11,7 +11,7 @@ function App() {
         </nav>
 
         <main className='px-6 pt-4 flex flex-col items-center md:items-start md:flex-row md:gap-12'>
-            <LearningSection />
+            <TranslateSection />
             <DictionarySection />
         </main>
     </>

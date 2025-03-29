@@ -39,7 +39,7 @@ const languages: Languages = {
 
 };
 
-export default function LearningSection() {
+export default function TranslateSection() {
 
 // states
     const [autoTranslation, setAutoTranslation] = useState(true);
@@ -92,7 +92,7 @@ export default function LearningSection() {
 
 
     return (
-        <div id="learning-section">
+        <div id="translate-section">
             
             <h2 className='font-medium text-center mb-4'>Add new words</h2>
 
