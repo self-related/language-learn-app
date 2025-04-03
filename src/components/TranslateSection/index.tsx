@@ -1,12 +1,24 @@
 import { useEffect, useState } from "react";
-import { useLazyTranslateGoogleQuery } from "../../redux/features/api/apiSlice";
+import { useLazyTranslateGoogleNewQuery } from "../../redux/features/api/apiSlice";
 import UserInput from "./UserInput";
 import Output from "./Output";
-import MoreOptions from "./MoreOptions";
+import MoreTranslations from "./MoreOptions";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { handleGoogleApi } from "./utils";
 
 export interface Languages {
     [key: string]: string;
+}
+
+export interface OtherTranslations {
+    pos: string,
+    translations: string[]
+};
+
+export interface TranslationResult {
+    original: string,
+    mainTranslation: string,
+    otherTranslations?: OtherTranslations[]
 }
 
 // temp constant
@@ -51,9 +63,16 @@ export default function TranslateSection() {
     
 
 // local variables
-    const [triggerQuery, {data}] = useLazyTranslateGoogleQuery();
-    const translatedWord = data ? data[0][0][0] : "";
 
+    // ToDo: remove old api query
+    // const [triggerQuery, {data}] = useLazyTranslateGoogleQuery();
+    // const translatedWord = data ? data[0][0][0] : "";
+
+    const [triggerQueryNew, {data: newData}] = useLazyTranslateGoogleNewQuery();
+
+    const newDataTransformed = handleGoogleApi(newData);
+
+    const translatedWord = newDataTransformed ?  newDataTransformed.mainTranslation : "";
 
 
 // callbacks
@@ -77,7 +96,7 @@ export default function TranslateSection() {
     };
     
     const handleTranslateButtonClick = () => {
-        triggerQuery({ sourceLang, targetLang, sourceText }, true);
+        triggerQueryNew({ sourceLang, targetLang, sourceText }, true);
     };
 
 
@@ -85,10 +104,10 @@ export default function TranslateSection() {
 // auto-translation effect
     useEffect(() => {
         if (sourceText !== "" && autoTranslation) {
-            triggerQuery({ sourceLang, targetLang, sourceText }, true);
+            triggerQueryNew({ sourceLang, targetLang, sourceText }, true);
         }
     
-    }, [autoTranslation, sourceText, sourceLang, targetLang, triggerQuery]);
+    }, [autoTranslation, sourceText, sourceLang, targetLang, triggerQueryNew]);
 
 
     return (
@@ -102,7 +121,7 @@ export default function TranslateSection() {
 
             <Output translatedWord={translatedWord} />
             
-            <MoreOptions />
+            <MoreTranslations otherTranslations={newDataTransformed?.otherTranslations} />
 
         </div>
 

@@ -6,6 +6,34 @@ export interface Query {
     sourceText: string
 }
 
+
+type GoogleApiSentences = {
+    trans: string, 
+    orig: string, 
+    backend: number
+}[];
+
+interface GoogleApiTranslationEntry {
+    word: string,
+    reverse_translation: string[],
+    score: number
+}
+
+type GoogleApiDict = {
+    pos: string, 
+    terms: string[], 
+    entry?: GoogleApiTranslationEntry[], 
+    base_form: string, 
+    pos_enum: number
+}[];
+
+export interface GoogleApiRespond {
+    sentences: GoogleApiSentences,
+    dict?: GoogleApiDict,
+    src: string,
+    spell?: {[field: string]: string | number | undefined} // temp; idk what it is
+}
+
 export const apiSlice = createApi({
     reducerPath: "apiSlice",
     baseQuery: fetchBaseQuery({
@@ -18,7 +46,13 @@ export const apiSlice = createApi({
                 method: "GET"
             })
         }),
+        translateGoogleNew: build.query<GoogleApiRespond, Query>({
+            query: (query) => ({
+                url: `translate_a/single?client=gtx&sl=${query.sourceLang}&tl=${query.targetLang}&dt=t&dt=bd&dj=1&q=${query.sourceText}`,
+                method: "GET"
+            })
+        }),
     })
 });
 
-export const { useTranslateGoogleQuery, useLazyTranslateGoogleQuery } = apiSlice;
+export const { useTranslateGoogleQuery, useLazyTranslateGoogleQuery, useTranslateGoogleNewQuery, useLazyTranslateGoogleNewQuery } = apiSlice;
