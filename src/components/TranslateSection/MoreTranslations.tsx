@@ -24,15 +24,13 @@ export default function MoreTranslations( {otherTranslations, onWordClick}: Prop
     ));
 
 
-
-
   return (
     <div id="more-translations">
-        <h2 className="font-medium text-center mt-8">More Translations
+        <h2 className="font-medium mt-8">More Translations
         </h2>
 
         <div
-            className='bg-[#505050] my-2 px-2 py-1 min-h-[70px] h-min w-[225px] rounded-sm'
+            className='block w-full h-32 overflow-y-scroll bg-[#505050] accent-orange-400 mt-1 px-2 py-1 resize-none rounded-sm'
         >
             <ol>
                 {

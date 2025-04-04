@@ -17,9 +17,9 @@ export default function UserInput(props: UserInputProps) {
     } = props;
 
     return (
-        <div id="input-div">
+        <div id="input-div" >
             <textarea id="user-input" placeholder='type a word or a phrase' value={sourceText} onChange={onInputChange} 
-                className='block bg-[#505050] hover:bg-[#606060] accent-orange-400 mt-4 mb-2 px-2 py-1 w-[225px] resize-none rounded-sm'
+                className='block w-full min-h-22 bg-[#505050] hover:bg-[#606060] accent-orange-400 mt-4 mb-2 px-2 py-1 resize-none rounded-sm'
             />
             <label htmlFor="auto-translate" className="block ml-auto mr-2 w-fit">
                 Translate automatically?

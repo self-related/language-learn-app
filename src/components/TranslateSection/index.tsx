@@ -118,9 +118,9 @@ export default function TranslateSection() {
     }, [dataTransformed?.mainTranslation]);
 
     return (
-        <div id="translate-section">
+        <section id="translate-section" className="w-[60%] md:w-[30%] mb-10">
             
-            <h2 className='font-medium text-center mb-4'>Add new words</h2>
+            <h2 className='text-2xl mb-4'>Translate</h2>
 
             <LanguageSwitcher languages={languages} sourceLang={sourceLang} targetLang={targetLang} setSourceLang={setSourceLang} setTargetLang={setTargetLang} switchLangs={switchLangs} />
 
@@ -130,7 +130,7 @@ export default function TranslateSection() {
             
             <MoreTranslations otherTranslations={dataTransformed?.otherTranslations} onWordClick={handleWordClick} />
 
-        </div>
+        </section>
 
     );
 }
