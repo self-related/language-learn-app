@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLazyTranslateGoogleNewQuery } from "../../redux/features/api/apiSlice";
 import UserInput from "./UserInput";
 import Output from "./Output";
-import MoreTranslations from "./MoreOptions";
+import MoreTranslations from "./MoreTranslations";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { handleGoogleApi } from "./utils";
 
