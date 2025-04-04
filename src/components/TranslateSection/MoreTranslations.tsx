@@ -5,17 +5,17 @@ interface Props {
 }
 
 export default function MoreTranslations( {otherTranslations}: Props ) {
-    const translations = otherTranslations?.map((trans, index) => (
-        <li key={index}>
+    const translationsList = otherTranslations?.map((entry, index) => (
+        <li key={index} className="mb-2">
             {/* type of word (Noun, verb, etc) */}
-            [{trans.pos.toUpperCase()}]:
+            <span className="text-white bg-orange-500 px-1 py-0.5 rounded-sm">{entry.pos}s:</span>
             
-            {/* translated words one by one */}
+            {/* nested list of translated words one by one */}
             {
-                trans.translations.map((word, index) => (
+                entry.translations.map((word, index) => (
                     <span key={"word-" + index}>
                         {index ? ", " : " "}
-                        <span className="cursor-pointer hover:bg-gray-600 p-0.5 rounded-sm">{word}</span>
+                        <span className="cursor-pointer bg-[#414343] hover:bg-gray-600 p-1 ml-1 rounded-sm leading-8">{word}</span>
                     </span>
                 ))
             }
@@ -35,7 +35,7 @@ export default function MoreTranslations( {otherTranslations}: Props ) {
         >
             <ol>
                 {
-                    translations
+                    translationsList
                 }
             </ol>
         </div>
