@@ -59,6 +59,7 @@ export default function TranslateSection() {
     const [sourceLang, setSourceLang] = useState("auto");
     const [targetLang, setTargetLang] = useState("en");
     const [sourceText, setSourceText] = useState("");
+    const [translatedWord, setTranslatedWord ] = useState<string>("");
 
     
 
@@ -72,7 +73,7 @@ export default function TranslateSection() {
 
     const newDataTransformed = handleGoogleApi(newData);
 
-    const translatedWord = newDataTransformed ?  newDataTransformed.mainTranslation : "";
+    // const translatedWord = newDataTransformed ?  newDataTransformed.mainTranslation : "";
 
 
 // callbacks
@@ -99,6 +100,13 @@ export default function TranslateSection() {
         triggerQueryNew({ sourceLang, targetLang, sourceText }, true);
     };
 
+    const handleOutputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setTranslatedWord(event.currentTarget.value);
+    };
+
+    const handleWordClick = (event: React.MouseEvent) => {
+        setTranslatedWord(event.currentTarget.innerHTML);
+    };
 
 
 // auto-translation effect
@@ -109,6 +117,9 @@ export default function TranslateSection() {
     
     }, [autoTranslation, sourceText, sourceLang, targetLang, triggerQueryNew]);
 
+    useEffect(() => {
+        setTranslatedWord(newDataTransformed?.mainTranslation ?? "")
+    }, [newDataTransformed?.mainTranslation]);
 
     return (
         <div id="translate-section">
@@ -119,9 +130,9 @@ export default function TranslateSection() {
 
             <UserInput autoTranslation={autoTranslation} onInputChange={handleUserInputChange} onCheckboxChange={handleAutoTranslationCheckboxChange} onButtonClick={handleTranslateButtonClick} sourceText={sourceText} />
 
-            <Output translatedWord={translatedWord} />
+            <Output translatedWord={translatedWord} onOutputChange={handleOutputChange} />
             
-            <MoreTranslations otherTranslations={newDataTransformed?.otherTranslations} />
+            <MoreTranslations otherTranslations={newDataTransformed?.otherTranslations} onWordClick={handleWordClick} />
 
         </div>
 

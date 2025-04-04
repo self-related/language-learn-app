@@ -1,10 +1,11 @@
 import { OtherTranslations } from ".";
 
 interface Props {
-    otherTranslations: OtherTranslations[] | undefined
+    otherTranslations: OtherTranslations[] | undefined,
+    onWordClick: (event: React.MouseEvent) => void
 }
 
-export default function MoreTranslations( {otherTranslations}: Props ) {
+export default function MoreTranslations( {otherTranslations, onWordClick}: Props ) {
     const translationsList = otherTranslations?.map((entry, index) => (
         <li key={index} className="mb-2">
             {/* type of word (Noun, verb, etc) */}
@@ -15,7 +16,7 @@ export default function MoreTranslations( {otherTranslations}: Props ) {
                 entry.translations.map((word, index) => (
                     <span key={"word-" + index}>
                         {index ? ", " : " "}
-                        <span className="cursor-pointer bg-[#414343] hover:bg-gray-600 p-1 ml-1 rounded-sm leading-8">{word}</span>
+                        <span onClick={onWordClick} className="cursor-pointer bg-[#414343] hover:bg-gray-600 p-1 ml-1 rounded-sm leading-8">{word}</span>
                     </span>
                 ))
             }
