@@ -31,7 +31,7 @@ export default function UserInput(props: UserInputProps) {
             { 
                 autoTranslation == false 
                 ? <button onClick={onButtonClick}
-                    className='mt-1 px-2 block ml-auto bg-gray-700 hover:bg-gray-600 active:bg-gray-800 accent-orange-400 outline-orange-400 focus:outline-2 cursor-pointer rounded-sm'
+                    className='mt-1 px-2 block ml-auto bg-gray-700 hover:bg-gray-600 active:bg-gray-800 accent-orange-400 outline-orange-400 focus-visible:outline-2 cursor-pointer rounded-sm'
                     >Translate
                 </button>
                 : ""

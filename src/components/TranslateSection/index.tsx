@@ -59,22 +59,13 @@ export default function TranslateSection() {
     const [sourceLang, setSourceLang] = useState("auto");
     const [targetLang, setTargetLang] = useState("en");
     const [sourceText, setSourceText] = useState("");
-    const [translatedWord, setTranslatedWord ] = useState<string>("");
+    const [mainTranslation, setMainTranslation ] = useState<string>("");
 
     
 
 // local variables
-
-    // ToDo: remove old api query
-    // const [triggerQuery, {data}] = useLazyTranslateGoogleQuery();
-    // const translatedWord = data ? data[0][0][0] : "";
-
-    const [triggerQueryNew, {data: newData}] = useLazyTranslateGoogleNewQuery();
-
-    const newDataTransformed = handleGoogleApi(newData);
-
-    // const translatedWord = newDataTransformed ?  newDataTransformed.mainTranslation : "";
-
+    const [triggerQueryNew, {data}] = useLazyTranslateGoogleNewQuery();
+    const dataTransformed = handleGoogleApi(data);
 
 // callbacks
     const switchLangs = () => {
@@ -101,15 +92,15 @@ export default function TranslateSection() {
     };
 
     const handleOutputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setTranslatedWord(event.currentTarget.value);
+        setMainTranslation(event.currentTarget.value);
     };
 
     const handleWordClick = (event: React.MouseEvent) => {
-        setTranslatedWord(event.currentTarget.innerHTML);
+        setMainTranslation(event.currentTarget.innerHTML);
     };
 
     const handleOutputReset = () => {
-        setTranslatedWord(newDataTransformed?.mainTranslation ?? "");
+        setMainTranslation(dataTransformed?.mainTranslation ?? "");
     };
 
 
@@ -121,9 +112,10 @@ export default function TranslateSection() {
     
     }, [autoTranslation, sourceText, sourceLang, targetLang, triggerQueryNew]);
 
+// change main translation state on query response
     useEffect(() => {
-        setTranslatedWord(newDataTransformed?.mainTranslation ?? "")
-    }, [newDataTransformed?.mainTranslation]);
+        setMainTranslation(dataTransformed?.mainTranslation ?? "")
+    }, [dataTransformed?.mainTranslation]);
 
     return (
         <div id="translate-section">
@@ -134,9 +126,9 @@ export default function TranslateSection() {
 
             <UserInput autoTranslation={autoTranslation} onInputChange={handleUserInputChange} onCheckboxChange={handleAutoTranslationCheckboxChange} onButtonClick={handleTranslateButtonClick} sourceText={sourceText} />
 
-            <Output translatedWord={translatedWord} onOutputChange={handleOutputChange} onOutputReset={handleOutputReset} />
+            <Output mainTranslation={mainTranslation} onOutputChange={handleOutputChange} onOutputReset={handleOutputReset} />
             
-            <MoreTranslations otherTranslations={newDataTransformed?.otherTranslations} onWordClick={handleWordClick} />
+            <MoreTranslations otherTranslations={dataTransformed?.otherTranslations} onWordClick={handleWordClick} />
 
         </div>
 
