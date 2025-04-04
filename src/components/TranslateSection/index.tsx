@@ -108,6 +108,10 @@ export default function TranslateSection() {
         setTranslatedWord(event.currentTarget.innerHTML);
     };
 
+    const handleOutputReset = () => {
+        setTranslatedWord(newDataTransformed?.mainTranslation ?? "");
+    };
+
 
 // auto-translation effect
     useEffect(() => {
@@ -130,7 +134,7 @@ export default function TranslateSection() {
 
             <UserInput autoTranslation={autoTranslation} onInputChange={handleUserInputChange} onCheckboxChange={handleAutoTranslationCheckboxChange} onButtonClick={handleTranslateButtonClick} sourceText={sourceText} />
 
-            <Output translatedWord={translatedWord} onOutputChange={handleOutputChange} />
+            <Output translatedWord={translatedWord} onOutputChange={handleOutputChange} onOutputReset={handleOutputReset} />
             
             <MoreTranslations otherTranslations={newDataTransformed?.otherTranslations} onWordClick={handleWordClick} />
 
