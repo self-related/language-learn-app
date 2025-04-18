@@ -20,10 +20,11 @@ export interface TranslationResult {
     mainTranslation?: string,
     otherTranslations?: OtherTranslations[],
     dictionaryName?: string,
+    detectedLanguage?: string,
 }
 
 // temp constant
-const languages: Languages = {
+export const languagesG: Languages = {
     auto: "Auto",
     en: "English",
     "zh-CN": "Chinese (Simplified)",
@@ -66,7 +67,7 @@ export default function TranslateSection() {
 
 // local variables
     const [triggerQueryNew, {data}] = useLazyTranslateGoogleNewQuery();
-    const translationResult = handleGoogleApi(data);
+    const translationResult = handleGoogleApi(data, sourceLang, targetLang);
 
 // callbacks
     const switchLangs = () => {
@@ -124,11 +125,11 @@ export default function TranslateSection() {
             
             <h2 className='text-2xl mb-4'>Translate</h2>
 
-            <LanguageSwitcher languages={languages} sourceLang={sourceLang} targetLang={targetLang} setSourceLang={setSourceLang} setTargetLang={setTargetLang} switchLangs={switchLangs} />
+            <LanguageSwitcher languages={languagesG} sourceLang={sourceLang} targetLang={targetLang} detectedLanguage={translationResult?.detectedLanguage} setSourceLang={setSourceLang} setTargetLang={setTargetLang} switchLangs={switchLangs} />
 
             <UserInput autoTranslation={autoTranslation} onInputChange={handleUserInputChange} onCheckboxChange={handleAutoTranslationCheckboxChange} onButtonClick={handleTranslateButtonClick} sourceText={sourceText} />
 
-            <Output translationResult={{...translationResult, dictionaryName: `${languages[sourceLang]} - ${languages[targetLang]}`}} mainTranslation={mainTranslation} onOutputChange={handleOutputChange} onOutputReset={handleOutputReset} />
+            <Output translationResult={translationResult} mainTranslation={mainTranslation} onOutputChange={handleOutputChange} onOutputReset={handleOutputReset} />
             
             <MoreTranslations otherTranslations={translationResult?.otherTranslations} onWordClick={handleWordClick} />
 

@@ -6,21 +6,24 @@ interface LanguageSwitcherProps {
     targetLang: string,
     setSourceLang: React.Dispatch<React.SetStateAction<string>>,
     setTargetLang: React.Dispatch<React.SetStateAction<string>>,
-    switchLangs: () => void
+    switchLangs: () => void,
+    detectedLanguage?: string
     
 }
 
 
 export default function LanguageSwitcher(props: LanguageSwitcherProps) {
-const { languages, sourceLang, setSourceLang, targetLang, setTargetLang, switchLangs } = props;
-
+const { languages, sourceLang, setSourceLang, targetLang, setTargetLang, detectedLanguage, switchLangs } = props;
+const detectedLanguageName = detectedLanguage ? ` (${languages[detectedLanguage]})` : "";
   return (
     <div id="language-switcher" className="flex w-full justify-between">
 
     <select name="current-lang" id="current-lang" value={sourceLang}  onChange={(e) => setSourceLang(e.target.value)}
             className="cursor-pointer p-2 grow w-0 bg-[#505050] hover:bg-[#606060] rounded-sm">
         {
-            Object.keys(languages).map((key) => (<option key={key} value={key}> {languages[key]} </option>))
+            Object.keys(languages).map((key) => (
+                <option key={key} value={key}> {`${languages[key]}${key == "auto" ? detectedLanguageName : ""}`} </option>
+            ))
         }
     </select>
     

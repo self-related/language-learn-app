@@ -11,6 +11,10 @@ interface OutputProps {
 export default function Output({ translationResult, mainTranslation, onOutputChange, onOutputReset}: OutputProps) {
     const dispatch = useAppDispatch();
 
+    const handleAddDictionaryClick = () => {
+        dispatch({ type: "dictionarySlice/addTranslation", payload: translationResult} );
+    }
+
     return (
     <div id="output-div" className="mt-4">
         <textarea id="output" value={mainTranslation} onChange={onOutputChange}
@@ -24,7 +28,7 @@ export default function Output({ translationResult, mainTranslation, onOutputCha
             >Reset
             </button>
 
-            <button onClick={() => dispatch({type: "dictionarySlice/addTranslation", payload: translationResult})}
+            <button onClick={handleAddDictionaryClick}
                 className='px-2 ml-2 bg-gray-700 hover:bg-gray-600 active:bg-gray-800 accent-orange-400 outline-orange-400 focus-visible:outline-2 cursor-pointer rounded-sm'
             >Add
             </button>
