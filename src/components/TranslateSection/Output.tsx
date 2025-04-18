@@ -12,7 +12,7 @@ export default function Output({ translationResult, mainTranslation, onOutputCha
     const dispatch = useAppDispatch();
 
     const handleAddDictionaryClick = () => {
-        dispatch({ type: "dictionarySlice/addTranslation", payload: translationResult} );
+        dispatch({ type: "dictionarySlice/addTranslation", payload: {...translationResult, mainTranslation}} );
     }
 
     return (
