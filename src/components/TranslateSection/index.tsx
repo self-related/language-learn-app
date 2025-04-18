@@ -16,9 +16,10 @@ export interface OtherTranslations {
 };
 
 export interface TranslationResult {
-    original: string,
-    mainTranslation: string,
-    otherTranslations?: OtherTranslations[]
+    original?: string,
+    mainTranslation?: string,
+    otherTranslations?: OtherTranslations[],
+    dictionaryName?: string,
 }
 
 // temp constant
@@ -65,7 +66,7 @@ export default function TranslateSection() {
 
 // local variables
     const [triggerQueryNew, {data}] = useLazyTranslateGoogleNewQuery();
-    const dataTransformed = handleGoogleApi(data);
+    const translationResult = handleGoogleApi(data);
 
 // callbacks
     const switchLangs = () => {
@@ -100,7 +101,7 @@ export default function TranslateSection() {
     };
 
     const handleOutputReset = () => {
-        setMainTranslation(dataTransformed?.mainTranslation ?? "");
+        setMainTranslation(translationResult?.mainTranslation ?? "");
     };
 
 
@@ -114,9 +115,10 @@ export default function TranslateSection() {
 
 // change main translation state on query response
     useEffect(() => {
-        setMainTranslation(dataTransformed?.mainTranslation ?? "")
-    }, [dataTransformed?.mainTranslation]);
+        setMainTranslation(translationResult?.mainTranslation ?? "")
+    }, [translationResult?.mainTranslation]);
 
+// ToDo: 
     return (
         <section id="translate-section" className="w-[60%] md:w-[30%] mb-10">
             
@@ -126,9 +128,9 @@ export default function TranslateSection() {
 
             <UserInput autoTranslation={autoTranslation} onInputChange={handleUserInputChange} onCheckboxChange={handleAutoTranslationCheckboxChange} onButtonClick={handleTranslateButtonClick} sourceText={sourceText} />
 
-            <Output mainTranslation={mainTranslation} onOutputChange={handleOutputChange} onOutputReset={handleOutputReset} />
+            <Output translationResult={{...translationResult, dictionaryName: `${languages[sourceLang]} - ${languages[targetLang]}`}} mainTranslation={mainTranslation} onOutputChange={handleOutputChange} onOutputReset={handleOutputReset} />
             
-            <MoreTranslations otherTranslations={dataTransformed?.otherTranslations} onWordClick={handleWordClick} />
+            <MoreTranslations otherTranslations={translationResult?.otherTranslations} onWordClick={handleWordClick} />
 
         </section>
 
