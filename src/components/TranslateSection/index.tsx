@@ -71,11 +71,14 @@ export default function TranslateSection() {
 
 // callbacks
     const switchLangs = () => {
-        if (sourceLang === "auto") {
-            return;
+        if (sourceLang === "auto" && translationResult?.detectedLanguage) {
+            setSourceLang(targetLang);
+            setTargetLang(translationResult?.detectedLanguage);
+
+        } else {
+            setSourceLang(targetLang);
+            setTargetLang(sourceLang);
         }
-        setSourceLang(targetLang);
-        setTargetLang(sourceLang);
     };
 
     const handleUserInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
