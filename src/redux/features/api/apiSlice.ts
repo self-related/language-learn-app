@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"; // for react
+import { GoogleApiRespond } from "./types";
 
 export interface Query {
     sourceLang: string,
@@ -7,32 +8,6 @@ export interface Query {
 }
 
 
-type GoogleApiSentences = {
-    trans: string, 
-    orig: string, 
-    backend: number
-}[];
-
-interface GoogleApiTranslationEntry {
-    word: string,
-    reverse_translation: string[],
-    score: number
-}
-
-type GoogleApiDict = {
-    pos: string, 
-    terms: string[], 
-    entry?: GoogleApiTranslationEntry[], 
-    base_form: string, 
-    pos_enum: number
-}[];
-
-export interface GoogleApiRespond {
-    sentences: GoogleApiSentences,
-    dict?: GoogleApiDict,
-    src: string,
-    spell?: {[field: string]: string | number | undefined} // temp; idk what it is
-}
 
 export const apiSlice = createApi({
     reducerPath: "apiSlice",
@@ -40,19 +15,31 @@ export const apiSlice = createApi({
         baseUrl: "https://translate.googleapis.com/"
     }),
     endpoints: (build) => ({
-        translateGoogle: build.query<{[s: string]: string}, Query>({
-            query: (query) => ({
-                url: `translate_a/single?client=gtx&sl=${query.sourceLang}&tl=${query.targetLang}&dt=t&q=${query.sourceText}`,
-                method: "GET"
-            })
-        }),
         translateGoogleNew: build.query<GoogleApiRespond, Query>({
             query: (query) => ({
                 url: `translate_a/single?client=gtx&sl=${query.sourceLang}&tl=${query.targetLang}&dt=t&dt=bd&dj=1&q=${query.sourceText}`,
                 method: "GET"
             })
         }),
+        translateGoogleTransformed: build.query<GoogleApiRespond, Query>({
+            query: (query) => ({
+                url: `translate_a/single?client=gtx&sl=${query.sourceLang}&tl=${query.targetLang}&dt=t&dt=bd&dj=1&q=${query.sourceText}`,
+                method: "GET"
+            }), //TODO: transformResponse
+/*             transformResponse: (response: GoogleApiRespond): TranslationResult => {
+                    return {
+                        dictionaryName,
+                        detectedLanguage: respond.src,
+                        original: respond.sentences[0].orig,
+                        mainTranslation: respond.sentences[0].trans,
+                        otherTranslations: respond.dict?.map(dict => ({
+                            pos: dict.pos,
+                            translations: dict.terms 
+                        })),
+                    }
+            } */
+        }),
     })
 });
 
-export const { useTranslateGoogleQuery, useLazyTranslateGoogleQuery, useTranslateGoogleNewQuery, useLazyTranslateGoogleNewQuery } = apiSlice;
+export const { useTranslateGoogleNewQuery, useLazyTranslateGoogleNewQuery } = apiSlice;

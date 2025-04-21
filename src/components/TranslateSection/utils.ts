@@ -1,6 +1,6 @@
-import { GoogleApiRespond } from "../../redux/features/api/apiSlice";
-import { TranslationResult } from ".";
-import { languagesG } from ".";
+import { GoogleApiRespond } from "../../redux/features/api/types";
+import { TranslationResult } from "../../types"; 
+import { languagesG } from "../../consts";
 
 export const handleGoogleApi = (respond: GoogleApiRespond | undefined, sourceLang: string, targetLang: string): TranslationResult | undefined => {
     if (!respond) 

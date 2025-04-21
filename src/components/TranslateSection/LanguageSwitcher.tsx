@@ -1,4 +1,4 @@
-import { Languages } from "."
+import { Languages } from "../../types";
 
 interface LanguageSwitcherProps {
     languages: Languages,

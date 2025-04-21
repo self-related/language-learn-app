@@ -1,4 +1,4 @@
-import { TranslationResult } from ".";
+import { TranslationResult } from "../../types";
 import { useAppDispatch } from "../../redux/store";
 
 interface OutputProps {

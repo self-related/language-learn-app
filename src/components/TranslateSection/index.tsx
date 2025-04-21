@@ -5,59 +5,12 @@ import Output from "./Output";
 import MoreTranslations from "./MoreTranslations";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { handleGoogleApi } from "./utils";
+import { languagesG } from "../../consts";
 
-export interface Languages {
-    [key: string]: string;
-}
-
-export interface OtherTranslations {
-    pos: string,
-    translations: string[]
-};
-
-export interface TranslationResult {
-    original?: string,
-    mainTranslation?: string,
-    otherTranslations?: OtherTranslations[],
-    dictionaryName?: string,
-    detectedLanguage?: string,
-}
-
-// temp constant
-export const languagesG: Languages = {
-    auto: "Auto",
-    en: "English",
-    "zh-CN": "Chinese (Simplified)",
-    "zh-TW": "Chinese (Traditional)",
-    cs: "Czech",
-    eo: "Esperanto",
-    nl: "Dutch",
-    et: "Estonian",
-    fi: "Finnish",
-    ga: "Irish",
-    it: "Italian",
-    ja: "Japanese",
-    kk: "Kazakh",
-    ko: "Korean",
-    la: "Latin",
-    mn: "Mongolian",
-    no: "Norwegian",
-    pl: "Polish",
-    ro: "Romanian",
-    ru: "Russian",
-    es: "Spanish",
-    sv: "Swedish",
-    th: "Thai",
-    tr: "Turkish",
-    uk: "Ukrainian"
-
-};
 
 export default function TranslateSection() {
-
 // states
     const [autoTranslation, setAutoTranslation] = useState(true);
-
     const [sourceLang, setSourceLang] = useState("auto");
     const [targetLang, setTargetLang] = useState("en");
     const [sourceText, setSourceText] = useState("");
