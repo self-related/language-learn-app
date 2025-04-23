@@ -1,17 +1,20 @@
 import { useState } from "react";
-import { useAppSelector } from "../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 
 
 export default function DictionarySection() {
     const [currentDictionary, setCurrentDictionary] = useState<string>(""); // state for selected dictionary
     const dictionaries = useAppSelector(state => state.dictionarySlice);
-    
+    const dispatch = useAppDispatch();
 
     const handleDictionaryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setCurrentDictionary(event.currentTarget.value);
     }
 
-    console.log(currentDictionary);
+    console.log(`Current Dictionary: ${currentDictionary}`);
+    const handleRemoveButton = (original) => {
+        dispatch({type: "dictionarySlice/deleteTranslation", payload: {dictionary: currentDictionary, original}});
+    }
     
     return (
         <section id="dictionary-section" className="w-[60%] md:w-[30%]" >
@@ -27,7 +30,7 @@ export default function DictionarySection() {
                 {
                     currentDictionary && (
                         <div>{dictionaries[currentDictionary].map((translation, index) => (
-                            <p key={index}><span className="text-red-300">{translation?.original}</span> - {translation?.mainTranslation}</p>
+                            <p key={index}><span className="text-red-300">{translation?.original}</span> - {translation?.mainTranslation} <button onClick={ () => handleRemoveButton(translation?.original) } className="text-white ml-1.5 rounded-sm w-4 h-4 text-[0.7rem] bg-gray-700 cursor-pointer hover:bg-gray-500 active:bg-gray-900">X</button></p>
                         ))}</div>
                     )
                 }

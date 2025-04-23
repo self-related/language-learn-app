@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { TranslationResult } from "../../../components/TranslateSection";
+import { TranslationResult } from "../../../types";
 
 export interface DictionaryMap {
     [name: string]: Array<TranslationResult>
@@ -19,14 +19,23 @@ export const dictionarySlice = createSlice({
 
             const dictionaryName = action.payload.dictionaryName;
 
-            if (state[dictionaryName]) {
-                state[dictionaryName].push(action.payload);
-            }
-            else {
+            if (!state[dictionaryName]) {
                 state[dictionaryName] = [];
-                state[dictionaryName].push(action.payload);
             }
 
+            const existingTranslationIndex = state[dictionaryName].findIndex(item => item.original == action.payload.original);
+
+            if (existingTranslationIndex >= 0) {
+                const replacing = window.confirm("This item already exists.\nReplace?");
+                if (replacing) {
+                    state[dictionaryName][existingTranslationIndex] = action.payload;
+                }
+            } else {
+                state[dictionaryName].push(action.payload);
+            }
+        },
+        deleteTranslation: (state: DictionaryMap, action) => {
+            state[action.payload.dictionary] = state[action.payload.dictionary].filter(translation => translation.original != action.payload.original);
         }
     }
 });
