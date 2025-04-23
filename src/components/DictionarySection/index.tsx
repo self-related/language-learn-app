@@ -12,7 +12,7 @@ export default function DictionarySection() {
     }
 
     console.log(`Current Dictionary: ${currentDictionary}`);
-    const handleRemoveButton = (original) => {
+    const handleRemoveButton = (original?: string) => {
         dispatch({type: "dictionarySlice/deleteTranslation", payload: {dictionary: currentDictionary, original}});
     }
     
