@@ -37,6 +37,9 @@ export const dictionarySlice = createSlice({
         },
         deleteTranslation: (state: DictionaryMap, action) => {
             state[action.payload.dictionary] = state[action.payload.dictionary].filter(translation => translation.original != action.payload.original);
+            /* ToDo:
+                remove dictionary if there's no entries
+             */
         }
     }
 });
