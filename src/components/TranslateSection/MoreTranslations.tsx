@@ -14,9 +14,9 @@ export default function MoreTranslations( {otherTranslations, onWordClick}: Prop
             {/* nested list of translated words one by one */}
             {
                 entry.translations.map((word, index) => (
-                    <span key={"word-" + index}>
+                    <span key={"word-" + index} className="break-words">
                         {index ? ", " : " "}
-                        <span onClick={onWordClick} className="cursor-pointer bg-[#414343] hover:bg-gray-600 p-1 ml-1 rounded-sm leading-8">{word}</span>
+                        <span onClick={onWordClick} className="cursor-pointer bg-[#414343] hover:bg-gray-600 p-1 ml-1 rounded-md leading-8">{word}</span>
                     </span>
                 ))
             }
@@ -30,7 +30,7 @@ export default function MoreTranslations( {otherTranslations, onWordClick}: Prop
         </h2>
 
         <div
-            className='block w-full h-40 overflow-y-scroll bg-[#505050] accent-orange-400 mt-1 px-2 py-1 resize-none rounded-sm'
+            className='block w-full min-h-30 max-h-48 overflow-y-scroll bg-[#505050] accent-orange-400 mt-1 px-2 py-1 resize-none rounded-sm'
         >
             <ol>
                 {
