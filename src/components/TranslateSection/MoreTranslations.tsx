@@ -30,7 +30,7 @@ export default function MoreTranslations( {otherTranslations, onWordClick}: Prop
         </h2>
 
         <div
-            className='block w-full h-32 overflow-y-scroll bg-[#505050] accent-orange-400 mt-1 px-2 py-1 resize-none rounded-sm'
+            className='block w-full h-40 overflow-y-scroll bg-[#505050] accent-orange-400 mt-1 px-2 py-1 resize-none rounded-sm'
         >
             <ol>
                 {

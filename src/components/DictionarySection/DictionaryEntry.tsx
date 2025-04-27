@@ -22,6 +22,11 @@ export default function DictionaryEntry({ translation, dictionary }: DictionaryE
             className="self-end absolute text-red-500 ml-1.5 rounded-sm h-6 aspect-square text-l  cursor-pointer hover:bg-orange-300 active:bg-orange-900"
         >X</button>
 
+        {/* ToDo: 
+        - Button to use current translation in both inputs
+        - Button to choose other translations (if exist)  
+        */}
+
         <p className="max-w-[92%] break-words">
            <span className="text-red-300">{sourceLang}:&nbsp;</span>{translation?.original}
         </p>
