@@ -2,17 +2,18 @@ import { TranslationResult } from "../../types";
 import { useAppDispatch } from "../../redux/store";
 
 interface OutputProps {
-    mainTranslation: string, // ToDo: remove in favor of TranslationResult
+    original: string, // don't remove - TranslationResult's origin text isn't manually changed
+    mainTranslation: string, // don't remove - TranslationResult's origin text isn't manually changed
     onOutputChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void,
     onOutputReset: () => void,
     translationResult?: TranslationResult,
 }
 
-export default function Output({ translationResult, mainTranslation, onOutputChange, onOutputReset}: OutputProps) {
+export default function Output({ translationResult, original, mainTranslation, onOutputChange, onOutputReset}: OutputProps) {
     const dispatch = useAppDispatch();
-
-    const handleAddDictionaryClick = () => {
-        dispatch({ type: "dictionarySlice/addTranslation", payload: {...translationResult, mainTranslation}} );
+    const handleAddTranslationClick = () => {
+        original = original.trim();
+        dispatch({ type: "dictionarySlice/addTranslation", payload: {...translationResult, original, mainTranslation}} );
     }
 
     return (
@@ -28,7 +29,7 @@ export default function Output({ translationResult, mainTranslation, onOutputCha
                 >Reset
                 </button>
 
-                <button onClick={handleAddDictionaryClick}
+                <button onClick={handleAddTranslationClick}
                     className='px-2 ml-2 bg-gray-700 hover:bg-gray-600 active:bg-gray-800 accent-orange-400 outline-orange-400 focus-visible:outline-2 cursor-pointer rounded-sm'
                 >Add
                 </button>

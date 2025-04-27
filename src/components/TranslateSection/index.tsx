@@ -72,7 +72,7 @@ export default function TranslateSection() {
 
             <UserInput autoTranslation={autoTranslation} onInputChange={ (event) => setSourceText(event.target.value) } onCheckboxChange={handleAutoTranslationCheckboxChange} onButtonClick={ () => triggerQueryNew({ sourceLang, targetLang, sourceText }, true) } sourceText={sourceText} />
 
-            <Output translationResult={translationResult} mainTranslation={mainTranslation} onOutputChange={ (event) => setMainTranslation(event.currentTarget.value) } onOutputReset={ () => setMainTranslation(translationResult?.mainTranslation ?? "") } />
+            <Output translationResult={translationResult} original={sourceText} mainTranslation={mainTranslation} onOutputChange={ (event) => setMainTranslation(event.currentTarget.value) } onOutputReset={ () => setMainTranslation(translationResult?.mainTranslation ?? "") } />
             
             <MoreTranslations otherTranslations={translationResult?.otherTranslations} onWordClick={ (event) => setMainTranslation(event.currentTarget.innerHTML) } />
 

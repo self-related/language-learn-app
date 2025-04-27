@@ -23,6 +23,7 @@ export const dictionarySlice = createSlice({
                 state[dictionaryName] = [];
             }
 
+            console.log(action.payload.original);
             const existingTranslationIndex = state[dictionaryName].findIndex(item => item.original == action.payload.original);
 
             if (existingTranslationIndex >= 0) {
