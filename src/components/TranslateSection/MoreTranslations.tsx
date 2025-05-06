@@ -7,17 +7,15 @@ interface Props {
 
 export default function MoreTranslations( {otherTranslations, onWordClick}: Props ) {
     const translationsList = otherTranslations?.map((entry, index) => (
-        <li key={index} className="mb-2">
-            {/* type of word (Noun, verb, etc) */}
-            <span className="text-white bg-orange-500 px-1 py-0.5 rounded-sm">{entry.pos}s:</span>
+        <li key={index} className="flex flex-wrap items-center gap-x-1 gap-y-2 mb-3 w-full">
+                
+                {/* type of word (Noun, verb, etc) */}
+            <p className="text-white bg-orange-500 px-1 py-0.5 rounded-sm">{entry.pos}s:</p>
             
-            {/* nested list of translated words one by one */}
+                {/* nested list of translated words one by one */}
             {
                 entry.translations.map((word, index) => (
-                    <span key={"word-" + index} className="break-words">
-                        {index ? ", " : " "}
-                        <span onClick={onWordClick} className="cursor-pointer bg-[#414343] hover:bg-gray-600 p-1 ml-1 rounded-md leading-8">{word}</span>
-                    </span>
+                    <button key={"word-" + index} onClick={onWordClick} className="cursor-pointer bg-[#414343] hover:bg-gray-600 p-1 ml-1 rounded-md">{word}</button>
                 ))
             }
         </li>
