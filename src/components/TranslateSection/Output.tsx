@@ -19,7 +19,7 @@ export default function Output({ translationResult, original, mainTranslation, o
     return (
         <div id="output-div" className="mt-4">
             <textarea id="output" value={mainTranslation} onChange={onOutputChange}
-                    className='block w-full min-h-22 bg-[#505050] hover:bg-[#606060] accent-orange-400 mt-4 mb-2 px-2 py-1 resize-none rounded-sm'
+                    className='block w-full min-h-22 bg-[#505050] hover:bg-[#606060] accent-orange-400 mt-4 mb-2 px-2 py-1 resize-none rounded-sm text-shadow-black-005rem'
                     />
 
             {/* buttons */}

@@ -6,3 +6,7 @@ body {
     background-color: #252525;
     color: #dddddd;
 }
+
+.text-shadow-black-005rem {
+    text-shadow: black 0.05rem 0.05rem 0.05rem;
+}
