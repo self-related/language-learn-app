@@ -5,7 +5,8 @@ export interface DictionaryMap {
     [name: string]: Array<TranslationResult>
 }
 
-const initialState: DictionaryMap = {};
+const savedState = localStorage.getItem("dictionaries");
+const initialState: DictionaryMap = savedState ? JSON.parse(savedState) : {};
 
 export const dictionarySlice = createSlice({
     initialState,
@@ -34,12 +35,16 @@ export const dictionarySlice = createSlice({
             } else {
                 state[dictionaryName].push(action.payload);
             }
+
+            localStorage.setItem("dictionaries", JSON.stringify(state));
         },
         deleteTranslation: (state: DictionaryMap, action) => {
             state[action.payload.dictionary] = state[action.payload.dictionary].filter(translation => translation.original != action.payload.original);
             /* ToDo:
                 remove dictionary if there's no entries
              */
+
+            localStorage.setItem("dictionaries", JSON.stringify(state));
         }
     }
 });
