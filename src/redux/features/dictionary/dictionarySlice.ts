@@ -43,6 +43,9 @@ export const dictionarySlice = createSlice({
             /* ToDo:
                 remove dictionary if there's no entries
              */
+            if (Object.keys(state[action.payload.dictionary]).length == 0) {
+                delete state[action.payload.dictionary];
+            }
 
             localStorage.setItem("dictionaries", JSON.stringify(state));
         }
