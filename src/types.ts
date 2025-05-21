@@ -12,9 +12,10 @@ export interface OtherTranslations {
     translations: string[]
 };
 export interface TranslationResult {
+    learned: boolean;
+    dictionaryName: string,
     original?: string,
     mainTranslation?: string,
     otherTranslations?: OtherTranslations[],
-    dictionaryName?: string,
     detectedLanguage?: string,
 }
