@@ -2,7 +2,7 @@ import { TranslationResult } from "../../types";
 import { useAppDispatch } from "../../redux/store";
 
 interface OutputProps {
-    original: string, // don't remove - TranslationResult's origin text isn't manually changed
+    original: string, // fetched OR manually changed translation
     mainTranslation: string, // don't remove - TranslationResult's origin text isn't manually changed
     onOutputChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void,
     onOutputReset: () => void,

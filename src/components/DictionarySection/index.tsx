@@ -7,6 +7,10 @@ import DictionaryEntry from "./DictionaryEntry";
     - move currentDictonary state to redux
     - change current dictionary when a new entry added (in TranslationSection)
     - remove useEffect when all of the above done 
+
+    - add addedDate for every translation
+    - sort by unlearned/learned
+    - sort by addedDate
  */
 
 

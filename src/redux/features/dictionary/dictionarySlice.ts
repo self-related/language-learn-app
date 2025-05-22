@@ -8,6 +8,17 @@ export interface DictionaryMap {
 const savedState = localStorage.getItem("dictionaries");
 const initialState: DictionaryMap = savedState ? JSON.parse(savedState) : {};
 
+function saveToLocalStorage(state: DictionaryMap) {
+    // clear storage if state is empty
+    if (Object.keys(state).length === 0) {
+        localStorage.clear();
+        return;
+    }
+
+    // save
+    localStorage.setItem("dictionaries", JSON.stringify(state));
+}
+
 export const dictionarySlice = createSlice({
     initialState,
     name: "dictionarySlice",
@@ -38,7 +49,7 @@ export const dictionarySlice = createSlice({
                 state[dictionaryName].push(newTranslation);
             }
 
-            localStorage.setItem("dictionaries", JSON.stringify(state));
+            saveToLocalStorage(state);
         },
         deleteTranslation: (state: DictionaryMap, action) => {
             state[action.payload.dictionary] = state[action.payload.dictionary].filter(translation => translation.original != action.payload.original);
@@ -47,9 +58,17 @@ export const dictionarySlice = createSlice({
                 delete state[action.payload.dictionary];
             }
 
-            localStorage.setItem("dictionaries", JSON.stringify(state));
-        }
+            saveToLocalStorage(state);
+        },
+        markLearned: (state: DictionaryMap, action: PayloadAction<TranslationResult>) => {
+            const dictionaryName = action.payload.dictionaryName;
+            const translation = state[dictionaryName].find(tr => tr.original === action.payload.original);
+            if (translation) translation.learned = !translation.learned;
+
+            saveToLocalStorage(state);
+        },
     }
 });
 
 export const {reducerPath, reducer} = dictionarySlice;
+export const { markLearned } = dictionarySlice.actions;
