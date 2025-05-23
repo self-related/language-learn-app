@@ -16,25 +16,27 @@ import DictionaryEntry from "./DictionaryEntry";
 
 export default function DictionarySection() {
     const dictionaries = useAppSelector(state => state.dictionarySlice);
-    const [currentDictionary, setCurrentDictionary] = useState<string>(""); // state for selected dictionary
+    const [currentDictionaryName, setCurrentDictionaryName] = useState<string>(""); // state for selected dictionary
 
     const handleDictionaryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setCurrentDictionary(event.currentTarget.value);
+        setCurrentDictionaryName(event.currentTarget.value);
     }
 
-    // set the first available dictionary (if it exists) to the currentDictionary state
+    // set the first available dictionary (if it exists) to the currentDictionaryName state
     useEffect(() => {
-        const dictionaryNames = Object.keys(dictionaries);
-        const dictionaryNotEmpty = dictionaryNames.length > 0;
+        const dictionaryAllNames = Object.keys(dictionaries);
+        const dictionariesNotEmpty = dictionaryAllNames.length > 0;
 
-        if (dictionaryNotEmpty && currentDictionary == "") {
-            setCurrentDictionary(dictionaryNames[0]);
+        // if no dictionary selected, set the first available dictionary 
+        if (dictionariesNotEmpty && currentDictionaryName == "") {
+            setCurrentDictionaryName(dictionaryAllNames[0]);
         }
 
-        if (currentDictionary && !dictionaries[currentDictionary]) {
-            setCurrentDictionary("");
+        // if selected dictionary is empty, select empty string
+        if (currentDictionaryName && !dictionaries[currentDictionaryName]) {
+            setCurrentDictionaryName("");
         }
-    }, [dictionaries, currentDictionary]);
+    }, [dictionaries, currentDictionaryName]);
 
 
     return (
@@ -42,7 +44,7 @@ export default function DictionarySection() {
             <h2 className='text-2xl mb-4'>Dictionaries</h2>
 
             {/* dictionary selection panel */}
-            <select name="current-dictionary" id="current-dictionary" value={currentDictionary ?? ""} onChange={handleDictionaryChange}
+            <select name="current-dictionary" id="current-dictionary" value={currentDictionaryName ?? ""} onChange={handleDictionaryChange}
                     className="cursor-pointer bg-[#505050] hover:bg-[#606060] p-2 rounded-sm">
                 {
                     Object.keys(dictionaries).length > 0 
@@ -56,9 +58,9 @@ export default function DictionarySection() {
             {/* dictionary div */}
             <ul className="list-none mt-4 py-4 px-3 bg-[#505050] min-w-[300px] min-h-[250px] rounded-md flex flex-col gap-y-4">
                 {
-                    currentDictionary && (
-                        <>{dictionaries[currentDictionary]?.map((translation, index) => (
-                            <DictionaryEntry key={index} translation={translation} dictionary={currentDictionary}/>
+                    currentDictionaryName && (
+                        <>{dictionaries[currentDictionaryName]?.map((translation, index) => (
+                            <DictionaryEntry key={index} translation={translation} dictionary={currentDictionaryName}/>
                         ))}</>
                     )
                 }
