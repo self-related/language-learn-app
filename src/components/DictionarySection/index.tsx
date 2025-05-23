@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../../redux/store";
-import DictionaryEntry from "./DictionaryEntry";
 import { TranslationResult } from "../../types";
-import { sortByLearned } from "./utils";
+import Category from "./Category";
 
 
 /*  ToDo: 
@@ -20,8 +19,9 @@ export default function DictionarySection() {
     const dictionaries = useAppSelector(state => state.dictionarySlice);
     const [currentDictionaryName, setCurrentDictionaryName] = useState<string>(""); // state for selected dictionary
 
-    let currentDictionary: TranslationResult[] = dictionaries && dictionaries[currentDictionaryName]; 
-    currentDictionary = sortByLearned(currentDictionary);
+    const words: TranslationResult[] = dictionaries && dictionaries[currentDictionaryName]; 
+    const learnedWords = words?.filter(word => word.learned);
+    const notLearnedWords = words?.filter(word => !word.learned);
 
     const handleDictionaryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setCurrentDictionaryName(event.currentTarget.value);
@@ -61,15 +61,10 @@ export default function DictionarySection() {
             </select>
 
             {/* dictionary div */}
-            <ul className="list-none mt-4 py-4 px-3 bg-[#505050] min-w-[300px] min-h-[250px] rounded-md flex flex-col gap-y-4">
-                {
-                    currentDictionary && (
-                        <>{currentDictionary?.map((translation, index) => (
-                            <DictionaryEntry key={index} translation={translation} dictionary={currentDictionaryName}/>
-                        ))}</>
-                    )
-                }
-            </ul>
+            <div className="mt-4 py-4 bg-[#505050] min-w-[300px] w-full min-h-[250px] md:max-h-[65vh] max-h-[80vh] overflow-scroll rounded-md flex flex-col gap-y-4">
+                <Category name="Not Learned" words={notLearnedWords} dictionaryName={currentDictionaryName} />
+                <Category name="Learned" words={learnedWords} dictionaryName={currentDictionaryName} />
+            </div>
         </section>
     );
 }
