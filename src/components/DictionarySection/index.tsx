@@ -45,7 +45,7 @@ export default function DictionarySection() {
 
 
     return (
-        <section id="dictionary-section" className="w-[60%] md:w-[30%]">
+        <section id="dictionary-section" className="md:w-[40%] w-[80%] md:min-w-[350px] mb-8">
             <h2 className='text-2xl mb-4'>Dictionaries</h2>
 
             {/* dictionary selection panel */}

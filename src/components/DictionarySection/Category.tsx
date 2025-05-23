@@ -15,9 +15,9 @@ export default function Category({name, words, dictionaryName}: CategoryProps) {
     return (
         <div className="w-full px-2">
             <button onClick={() => setCollapsed(!collapsed)}
-                className="w-full h-8 bg-[#393b3b] rounded-sm hover:bg-[#414242] active:bg-[#232424] flex justify-between items-center px-2 cursor-pointer"
+                className="w-full h-8 bg-[#393b3b] rounded-sm hover:bg-[#414242] active:bg-[#232424] flex justify-between items-center px-2 pr-5 cursor-pointer"
             >   <span>{name}</span>
-                <span>{collapsed ? "+" : "-"}</span>
+                <span>{collapsed || wordsEmpty ? "+" : "-"}</span>
             </button>
             {
                 !collapsed && !wordsEmpty && (

@@ -64,7 +64,7 @@ export default function TranslateSection() {
 
 
     return (
-        <section id="translate-section" className="w-[60%] md:w-[30%] mb-10">
+        <section id="translate-section" className="md:w-[40%] w-[80%] md:min-w-[350px] mb-10">
             
             <h2 className='text-2xl mb-4'>Translate</h2>
 
