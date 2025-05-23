@@ -12,6 +12,10 @@ export default function Category({name, words, dictionaryName}: CategoryProps) {
     const [collapsed, setCollapsed] = useState(false);
     const wordsEmpty = !words || words?.length === 0;
 
+    if (!dictionaryName) {
+        return "";
+    }
+
     return (
         <div className="w-full px-2">
             <button onClick={() => setCollapsed(!collapsed)}
