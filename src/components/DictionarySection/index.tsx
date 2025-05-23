@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../../redux/store";
 import DictionaryEntry from "./DictionaryEntry";
+import { TranslationResult } from "../../types";
+import { sortByLearned } from "./utils";
 
 
 /*  ToDo: 
@@ -17,6 +19,9 @@ import DictionaryEntry from "./DictionaryEntry";
 export default function DictionarySection() {
     const dictionaries = useAppSelector(state => state.dictionarySlice);
     const [currentDictionaryName, setCurrentDictionaryName] = useState<string>(""); // state for selected dictionary
+
+    let currentDictionary: TranslationResult[] = dictionaries && dictionaries[currentDictionaryName]; 
+    currentDictionary = sortByLearned(currentDictionary);
 
     const handleDictionaryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setCurrentDictionaryName(event.currentTarget.value);
@@ -58,8 +63,8 @@ export default function DictionarySection() {
             {/* dictionary div */}
             <ul className="list-none mt-4 py-4 px-3 bg-[#505050] min-w-[300px] min-h-[250px] rounded-md flex flex-col gap-y-4">
                 {
-                    currentDictionaryName && (
-                        <>{dictionaries[currentDictionaryName]?.map((translation, index) => (
+                    currentDictionary && (
+                        <>{currentDictionary?.map((translation, index) => (
                             <DictionaryEntry key={index} translation={translation} dictionary={currentDictionaryName}/>
                         ))}</>
                     )
