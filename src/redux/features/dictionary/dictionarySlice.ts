@@ -46,7 +46,7 @@ export const dictionarySlice = createSlice({
                     state[dictionaryName][existingTranslationIndex] = newTranslation;
                 }
             } else {
-                state[dictionaryName].push(newTranslation);
+                state[dictionaryName].unshift(newTranslation);
             }
 
             saveToLocalStorage(state);

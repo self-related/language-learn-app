@@ -19,7 +19,7 @@ export default function DictionarySection() {
     const dictionaries = useAppSelector(state => state.dictionarySlice);
     const [currentDictionaryName, setCurrentDictionaryName] = useState<string>(""); // state for selected dictionary
 
-    const words: TranslationResult[] = dictionaries && dictionaries[currentDictionaryName]; 
+    const words: TranslationResult[] = dictionaries[currentDictionaryName];
     const learnedWords = words?.filter(word => word.learned);
     const notLearnedWords = words?.filter(word => !word.learned);
 
@@ -48,7 +48,7 @@ export default function DictionarySection() {
         <section id="dictionary-section" className="md:w-[40%] w-[80%] md:min-w-[350px] mb-8">
             <h2 className='text-2xl mb-4'>Dictionaries</h2>
 
-            {/* dictionary selection panel */}
+             {/* dictionary selection panel */}
             <select name="current-dictionary" id="current-dictionary" value={currentDictionaryName ?? ""} onChange={handleDictionaryChange}
                     className="cursor-pointer bg-[#505050] hover:bg-[#606060] p-2 rounded-sm">
                 {
@@ -60,7 +60,7 @@ export default function DictionarySection() {
                 }
             </select>
 
-            {/* dictionary div */}
+             {/* dictionary div */}
             <div className="mt-4 py-4 bg-[#505050] min-w-[300px] w-full min-h-[250px] md:max-h-[65vh] max-h-[80vh] overflow-scroll rounded-md flex flex-col gap-y-4">
                 <Category name="Not Learned" words={notLearnedWords} dictionaryName={currentDictionaryName} />
                 <Category name="Learned" words={learnedWords} dictionaryName={currentDictionaryName} />
