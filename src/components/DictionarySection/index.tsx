@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAppSelector } from "../../redux/store";
 import { TranslationResult } from "../../types";
 import Category from "./Category";
+import { sortByName } from "./utils";
 
 
 /*  ToDo: 
@@ -14,20 +15,38 @@ import Category from "./Category";
     - sort by addedDate
  */
 
+    enum Sort {
+        RecentlyAdded,
+        Name
+    }
+
 
 export default function DictionarySection() {
-    const dictionaries = useAppSelector(state => state.dictionarySlice);
-    const [currentDictionaryName, setCurrentDictionaryName] = useState<string>(""); // state for selected dictionary
+    /** Redux State */
 
-    const words: TranslationResult[] = dictionaries[currentDictionaryName];
-    const learnedWords = words?.filter(word => word.learned);
-    const notLearnedWords = words?.filter(word => !word.learned);
+    const dictionaries = useAppSelector(state => state.dictionarySlice);
+    const firstDictionaryName = Object.keys(dictionaries ?? {})[0];
+    
+
+
+    /*** Component states */
+
+    const [currentDictionaryName, setCurrentDictionaryName] = useState<string>(firstDictionaryName ?? ""); // state for selected dictionary
+    const [sortBy, setSortBy] = useState<Sort | null>(Sort.Name);
+
+
+
+    /** Callbacks */
 
     const handleDictionaryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setCurrentDictionaryName(event.currentTarget.value);
     }
 
-    // set the first available dictionary (if it exists) to the currentDictionaryName state
+
+
+    /** Effects */
+
+     // set the first available dictionary (if it exists) to the currentDictionaryName state
     useEffect(() => {
         const dictionaryAllNames = Object.keys(dictionaries);
         const dictionariesNotEmpty = dictionaryAllNames.length > 0;
@@ -42,8 +61,21 @@ export default function DictionarySection() {
             setCurrentDictionaryName("");
         }
     }, [dictionaries, currentDictionaryName]);
+    
 
 
+    /** Pre-render transformations */
+
+    let currentDictionary: TranslationResult[] | undefined = dictionaries[currentDictionaryName];
+
+    switch (sortBy) {
+        case (Sort.Name): currentDictionary = sortByName(currentDictionary);
+        break;
+    }
+    
+    const learnedWords = currentDictionary?.filter(word => word.learned);
+    const notLearnedWords = currentDictionary?.filter(word => !word.learned);
+    
     return (
         <section id="dictionary-section" className="md:w-[40%] w-[80%] md:min-w-[350px] mb-8">
             <h2 className='text-2xl mb-4'>Dictionaries</h2>
