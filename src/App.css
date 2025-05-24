@@ -8,5 +8,9 @@ body {
 }
 
 .text-shadow-black-005rem {
-    text-shadow: black 0.05rem 0.05rem 0.05rem;
+    text-shadow: black 0 0 0.05rem;
+}
+
+.text-shadow-white-005rem {
+    text-shadow: white 0 0.05rem;
 }

@@ -81,16 +81,26 @@ export default function DictionarySection() {
             <h2 className='text-2xl mb-4'>Dictionaries</h2>
 
              {/* dictionary selection panel */}
-            <select name="current-dictionary" id="current-dictionary" value={currentDictionaryName ?? ""} onChange={handleDictionaryChange}
-                    className="cursor-pointer bg-[#505050] hover:bg-[#606060] p-2 rounded-sm">
-                {
-                    Object.keys(dictionaries).length > 0 
-                    ?
-                        Object.keys(dictionaries).map(key => (<option key={key} value={key}>{key}</option>))
-                    :
-                        <option value="">Choose a dictionary</option>
-                }
-            </select>
+             <div className="flex justify-between items-center mr-2">
+                <select name="current-dictionary" id="current-dictionary" value={currentDictionaryName ?? ""} onChange={handleDictionaryChange}
+                        className="cursor-pointer bg-[#505050] hover:bg-[#606060] p-2 rounded-sm">
+                    {
+                        Object.keys(dictionaries).length > 0 
+                        ?
+                            Object.keys(dictionaries).map(key => (<option key={key} value={key}>{key}</option>))
+                        :
+                            <option value="">Choose a dictionary</option>
+                    }
+                </select>
+
+                <div className="h-7">
+                    <button onClick={() => setSortBy(sortBy => sortBy == Sort.Name ? null : Sort.Name)} 
+                        className={`h-full aspect-square rounded-md ${sortBy == Sort.Name ? "bg-[#e29d48] hover:bg-[#eab676]" : "bg-[#e2e248] hover:bg-[#f3f37b]"}  active:bg-[#e29d48] text-black cursor-pointer`}>
+                        Aa
+                     </button>
+                </div>
+
+             </div>
 
              {/* dictionary div */}
             <div className="mt-4 py-4 bg-[#505050] min-w-[300px] w-full min-h-[250px] md:max-h-[65vh] max-h-[80vh] overflow-scroll rounded-md flex flex-col gap-y-4">
