@@ -6,36 +6,30 @@ import MoreTranslations from "./MoreTranslations";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { handleGoogleApi } from "./utils";
 import { languagesG } from "../../consts";
+import { useAppSelector } from "../../redux/store";
 
 
 export default function TranslateSection() {
 
 // states
     const [autoTranslation, setAutoTranslation] = useState(true);
-    const [sourceLang, setSourceLang] = useState("auto");
-    const [targetLang, setTargetLang] = useState("es");
+
     const [sourceText, setSourceText] = useState("");
     const [mainTranslation, setMainTranslation ] = useState<string>("");
 
 
+    // Redux global states
+    const sourceLangRedux = useAppSelector(slice => slice.settingsSlice.sourceLang);
+    const targetLangRedux = useAppSelector(slice => slice.settingsSlice.targetLang);
+
 
 // local variables
     const [triggerQueryNew, {data}] = useLazyTranslateGoogleNewQuery();
-    const translationResult = handleGoogleApi(data, sourceLang, targetLang);
+    const translationResult = handleGoogleApi(data, sourceLangRedux, targetLangRedux);
 
 
 
 // callbacks
-    const switchLangs = () => {
-        if (sourceLang === "auto" && translationResult?.detectedLanguage) {
-            setSourceLang(targetLang);
-            setTargetLang(translationResult?.detectedLanguage);
-
-        } else {
-            setSourceLang(targetLang);
-            setTargetLang(sourceLang);
-        }
-    };
 
     const handleAutoTranslationCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) 
@@ -52,8 +46,8 @@ export default function TranslateSection() {
     // auto-translation effect
     useEffect(() => {
         if (sourceText !== "" && autoTranslation)
-            triggerQueryNew({ sourceLang, targetLang, sourceText }, true);
-    }, [autoTranslation, sourceText, sourceLang, targetLang, triggerQueryNew]);
+            triggerQueryNew({ sourceLang: sourceLangRedux, targetLang: targetLangRedux, sourceText }, true);
+    }, [autoTranslation, sourceText, sourceLangRedux, targetLangRedux, triggerQueryNew]);
 
 
     // change main translation state on query response
@@ -68,9 +62,9 @@ export default function TranslateSection() {
             
             <h2 className='text-2xl mb-4'>Translate</h2>
 
-            <LanguageSwitcher languages={languagesG} sourceLang={sourceLang} targetLang={targetLang} detectedLanguage={translationResult?.detectedLanguage} setSourceLang={setSourceLang} setTargetLang={setTargetLang} switchLangs={switchLangs} />
+            <LanguageSwitcher languages={languagesG} detectedLanguage={translationResult?.detectedLanguage} />
 
-            <UserInput autoTranslation={autoTranslation} onInputChange={ (event) => setSourceText(event.target.value) } onCheckboxChange={handleAutoTranslationCheckboxChange} onButtonClick={ () => triggerQueryNew({ sourceLang, targetLang, sourceText }, true) } sourceText={sourceText} />
+            <UserInput autoTranslation={autoTranslation} onInputChange={ (event) => setSourceText(event.target.value) } onCheckboxChange={handleAutoTranslationCheckboxChange} onButtonClick={ () => triggerQueryNew({ sourceLang: sourceLangRedux, targetLang: targetLangRedux, sourceText }, true) } sourceText={sourceText} />
 
             <Output translationResult={translationResult} original={sourceText} mainTranslation={mainTranslation} onOutputChange={ (event) => setMainTranslation(event.currentTarget.value) } onOutputReset={ () => setMainTranslation(translationResult?.mainTranslation ?? "") } />
             

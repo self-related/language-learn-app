@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface Settings {
     currentApi: string,
@@ -18,13 +18,13 @@ const initialState: Settings = {
     hideTranslations: false,
 };
 
-const settingsSlice = createSlice({
+export const settingsSlice = createSlice({
     name: "settingsSlice",
     initialState,
     reducers: {
         setCurrentApi: () => {},
-        setSourceLang: () => {},
-        setTargetLang: () => {},
+        setSourceLang: (state: Settings, action: PayloadAction<string>) => {state.sourceLang = action.payload},
+        setTargetLang: (state: Settings, action: PayloadAction<string>) => {state.targetLang = action.payload},
         setSelectedDictionary: () => {},
         setTranslateAutomatically: () => {},
         setHideTranslations: () => {},
