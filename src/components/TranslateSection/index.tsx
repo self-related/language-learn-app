@@ -21,13 +21,14 @@ export default function TranslateSection() {
     // Redux global states
     const sourceLangRedux = useAppSelector(slice => slice.settingsSlice.sourceLang);
     const targetLangRedux = useAppSelector(slice => slice.settingsSlice.targetLang);
+    const inputText = useAppSelector(state => state.translateSlice.inputText);
+    const outputText = useAppSelector(state => state.translateSlice.outputText);
+
 
 
 // local variables
     const [triggerQueryNew, {data}] = useLazyTranslateGoogleNewQuery();
     const translationResult = handleGoogleApi(data, sourceLangRedux, targetLangRedux);
-
-
 
 // callbacks
 
@@ -45,9 +46,9 @@ export default function TranslateSection() {
 
     // auto-translation effect
     useEffect(() => {
-        if (sourceText !== "" && autoTranslation)
-            triggerQueryNew({ sourceLang: sourceLangRedux, targetLang: targetLangRedux, sourceText }, true);
-    }, [autoTranslation, sourceText, sourceLangRedux, targetLangRedux, triggerQueryNew]);
+        if (inputText !== "" && autoTranslation)
+            triggerQueryNew({ sourceLang: sourceLangRedux, targetLang: targetLangRedux, sourceText: inputText }, true);
+    }, [autoTranslation, sourceText, sourceLangRedux, targetLangRedux, triggerQueryNew, inputText]);
 
 
     // change main translation state on query response

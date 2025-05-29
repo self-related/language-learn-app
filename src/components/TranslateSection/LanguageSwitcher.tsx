@@ -1,4 +1,5 @@
 import { setSourceLang, setTargetLang } from "../../redux/features/settings/settingsSlice";
+import { swapInputOutputText } from "../../redux/features/translate/translateSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { Languages } from "../../types";
 
@@ -26,11 +27,12 @@ export default function LanguageSwitcher(props: LanguageSwitcherProps) {
         if (sourceLangRedux === "auto" && detectedLanguage) {
             dispatch(setSourceLang(targetLangRedux));
             dispatch(setTargetLang(detectedLanguage));
-
         } else {
             dispatch(setSourceLang(targetLangRedux));
             dispatch(setTargetLang(sourceLangRedux));
         }
+
+        dispatch(swapInputOutputText());
 
         // TODO: swap input and output
     };

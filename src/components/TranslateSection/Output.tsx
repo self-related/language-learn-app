@@ -1,5 +1,7 @@
 import { TranslationResult } from "../../types";
-import { useAppDispatch } from "../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { updateOutputText } from "../../redux/features/translate/translateSlice";
+import { useCallback, useEffect } from "react";
 
 interface OutputProps {
     original: string, // fetched OR manually changed translation
@@ -11,14 +13,29 @@ interface OutputProps {
 
 export default function Output({ translationResult, original, mainTranslation, onOutputChange, onOutputReset}: OutputProps) {
     const dispatch = useAppDispatch();
+
+    // Redux states
+    const inputText = useAppSelector(state => state.translateSlice.inputText);
+    const outputText = useAppSelector(state => state.translateSlice.outputText);
+
+    const changeOutput = useCallback((value: string) => {
+        dispatch(updateOutputText(value))
+    }, [dispatch]);
+
+    useEffect(() => {
+        changeOutput(mainTranslation);
+    }, [mainTranslation, changeOutput]);
+
+
     const handleAddTranslationClick = () => {
-        original = original.trim();
+        const original = inputText.trim();
+        const mainTranslation = outputText;
         dispatch({ type: "dictionarySlice/addTranslation", payload: {...translationResult, original, mainTranslation}} );
     }
 
     return (
         <div id="output-div" className="mt-4">
-            <textarea id="output" value={mainTranslation} onChange={onOutputChange}
+            <textarea id="output" value={outputText} onChange={(e) => changeOutput(e.currentTarget.value)}
                     className='block w-full min-h-22 bg-[#505050] hover:bg-[#606060] accent-orange-400 mt-4 mb-2 px-2 py-1 resize-none rounded-sm text-shadow-black-005rem'
                     />
 
