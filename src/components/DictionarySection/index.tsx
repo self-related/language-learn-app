@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useAppSelector } from "../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { TranslationResult } from "../../types";
 import Category from "./Category";
 import { sortByName } from "./utils";
+import { setSelectedDictionaryName } from "../../redux/features/settings/settingsSlice";
 
 
 /*  ToDo: 
@@ -23,15 +24,13 @@ import { sortByName } from "./utils";
 
 export default function DictionarySection() {
     /** Redux State */
+    const dispatch = useAppDispatch();
 
     const dictionaries = useAppSelector(state => state.dictionarySlice);
-    const firstDictionaryName = Object.keys(dictionaries ?? {})[0];
+    const currentDictionaryNameRedux = useAppSelector(state => state.settingsSlice.selectedDictionaryName);
+
     
-
-
     /*** Component states */
-
-    const [currentDictionaryName, setCurrentDictionaryName] = useState<string>(firstDictionaryName ?? ""); // state for selected dictionary
     const [sortBy, setSortBy] = useState<Sort | null>(Sort.Name);
 
 
@@ -39,9 +38,8 @@ export default function DictionarySection() {
     /** Callbacks */
 
     const handleDictionaryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setCurrentDictionaryName(event.currentTarget.value);
+        dispatch(setSelectedDictionaryName(event.target.value));
     }
-
 
 
     /** Effects */
@@ -52,21 +50,21 @@ export default function DictionarySection() {
         const dictionariesNotEmpty = dictionaryAllNames.length > 0;
 
         // if no dictionary selected, set the first available dictionary 
-        if (dictionariesNotEmpty && currentDictionaryName == "") {
-            setCurrentDictionaryName(dictionaryAllNames[0]);
+        if (dictionariesNotEmpty && currentDictionaryNameRedux == "") {
+            dispatch(setSelectedDictionaryName(dictionaryAllNames[0]));
         }
 
         // if selected dictionary is empty, select empty string
-        if (currentDictionaryName && !dictionaries[currentDictionaryName]) {
-            setCurrentDictionaryName("");
+        if (currentDictionaryNameRedux && !dictionaries[currentDictionaryNameRedux]) {
+            dispatch(setSelectedDictionaryName(""));
         }
-    }, [dictionaries, currentDictionaryName]);
+    }, [dictionaries, currentDictionaryNameRedux, dispatch]);
     
 
 
     /** Pre-render transformations */
 
-    let currentDictionary: TranslationResult[] | undefined = dictionaries[currentDictionaryName];
+    let currentDictionary: TranslationResult[] | undefined = dictionaries[currentDictionaryNameRedux];
 
     switch (sortBy) {
         case (Sort.Name): currentDictionary = sortByName(currentDictionary);
@@ -82,7 +80,7 @@ export default function DictionarySection() {
 
              {/* dictionary selection panel */}
              <div className="flex justify-between items-center mr-2">
-                <select name="current-dictionary" id="current-dictionary" value={currentDictionaryName ?? ""} onChange={handleDictionaryChange}
+                <select name="current-dictionary" id="current-dictionary" value={currentDictionaryNameRedux ?? ""} onChange={handleDictionaryChange}
                         className="cursor-pointer bg-[#505050] hover:bg-[#606060] p-2 rounded-sm">
                     {
                         Object.keys(dictionaries).length > 0 
@@ -104,8 +102,8 @@ export default function DictionarySection() {
 
              {/* dictionary div */}
             <div className="mt-4 py-4 bg-[#505050] min-w-[300px] w-full min-h-[250px] md:max-h-[65vh] max-h-[80vh] overflow-scroll rounded-md flex flex-col gap-y-4">
-                <Category name="Not Learned" words={notLearnedWords} dictionaryName={currentDictionaryName} />
-                <Category name="Learned" words={learnedWords} dictionaryName={currentDictionaryName} />
+                <Category name="Not Learned" words={notLearnedWords} dictionaryName={currentDictionaryNameRedux} />
+                <Category name="Learned" words={learnedWords} dictionaryName={currentDictionaryNameRedux} />
             </div>
         </section>
     );

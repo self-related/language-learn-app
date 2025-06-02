@@ -4,16 +4,17 @@ interface Settings {
     currentApi: string,
     sourceLang: string,
     targetLang: string,
-    selectedDictionary: string,
+    selectedDictionaryName: string,
     translateAutomatically: boolean,
     hideTranslations: boolean,
+    // ToDo: sortBy
 }
 
 const initialState: Settings = {
     currentApi: "google",
     sourceLang: "auto",
     targetLang: "es",
-    selectedDictionary: "",
+    selectedDictionaryName: "",
     translateAutomatically: true,
     hideTranslations: false,
 };
@@ -25,11 +26,11 @@ export const settingsSlice = createSlice({
         setCurrentApi: () => {},
         setSourceLang: (state: Settings, action: PayloadAction<string>) => {state.sourceLang = action.payload},
         setTargetLang: (state: Settings, action: PayloadAction<string>) => {state.targetLang = action.payload},
-        setSelectedDictionary: () => {},
+        setSelectedDictionaryName: (state: Settings, action: PayloadAction<string>) => { state.selectedDictionaryName = action.payload },
         setTranslateAutomatically: () => {},
         setHideTranslations: () => {},
     },
 });
 
 
-export const { setSourceLang, setTargetLang, setSelectedDictionary, setTranslateAutomatically, setHideTranslations } = settingsSlice.actions;
+export const { setSourceLang, setTargetLang, setSelectedDictionaryName, setTranslateAutomatically, setHideTranslations } = settingsSlice.actions;
