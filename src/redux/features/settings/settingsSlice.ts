@@ -10,7 +10,13 @@ interface Settings {
     // ToDo: sortBy
 }
 
-const initialState: Settings = {
+const saveSettings = (state: Settings) => localStorage.setItem("settings", JSON.stringify(state));
+
+const savedSettings = localStorage.getItem("settings");
+
+const initialState: Settings = savedSettings 
+    ? JSON.parse(savedSettings) 
+    : {
     currentApi: "google",
     sourceLang: "auto",
     targetLang: "es",
@@ -24,9 +30,18 @@ export const settingsSlice = createSlice({
     initialState,
     reducers: {
         setCurrentApi: () => {},
-        setSourceLang: (state: Settings, action: PayloadAction<string>) => {state.sourceLang = action.payload},
-        setTargetLang: (state: Settings, action: PayloadAction<string>) => {state.targetLang = action.payload},
-        setSelectedDictionaryName: (state: Settings, action: PayloadAction<string>) => { state.selectedDictionaryName = action.payload },
+        setSourceLang: (state: Settings, action: PayloadAction<string>) => {
+            state.sourceLang = action.payload;
+            saveSettings(state);
+        },
+        setTargetLang: (state: Settings, action: PayloadAction<string>) => {
+            state.targetLang = action.payload;
+            saveSettings(state);
+        },
+        setSelectedDictionaryName: (state: Settings, action: PayloadAction<string>) => { 
+            state.selectedDictionaryName = action.payload;
+            saveSettings(state);
+        },
         setTranslateAutomatically: () => {},
         setHideTranslations: () => {},
     },
