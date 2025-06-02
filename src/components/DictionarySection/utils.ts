@@ -2,7 +2,6 @@ import { TranslationResult } from "../../types";
 
 export const sortByName = (words: readonly TranslationResult[] | undefined): TranslationResult[] | undefined => {
     if (!words) return words;
-    console.log("object")
     const sortedWords = [...words].sort((wordA, wordB) => {
         if (!wordA.original || !wordB.original) return 0;
 
@@ -16,7 +15,6 @@ export const sortByName = (words: readonly TranslationResult[] | undefined): Tra
             const letterACode = lettersA[i].toLowerCase().charCodeAt(0);
             const letterBCode = lettersB[i].toLowerCase().charCodeAt(0);
             const diff = letterACode - letterBCode;
-            console.log(`${letterACode}, ${letterBCode}`)
 
             if (diff === 0) {
                 continue;
