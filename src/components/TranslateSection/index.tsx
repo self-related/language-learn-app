@@ -26,7 +26,7 @@ export default function TranslateSection() {
 
 
     // local variables
-    const [triggerQueryNew, {data}] = useLazyTranslateGoogleNewQuery();
+    const [triggerQueryNew, {data, isFetching, isError}] = useLazyTranslateGoogleNewQuery();
     const translationResult = handleGoogleApi(data, sourceLangRedux, targetLangRedux);
 
     // callbacks
@@ -59,6 +59,18 @@ export default function TranslateSection() {
 
             <UserInput  onButtonClick={ () => triggerQueryNew({ sourceLang: sourceLangRedux, targetLang: targetLangRedux, sourceText: inputText }, true) } />
 
+            {
+                isFetching && (
+                    <p>Loading...</p>
+                )
+            }
+
+            {
+                isError && (
+                    <p className="text-red-500">Error, try again</p>
+                )
+            }
+            
             <Output translationResult={translationResult} original={inputText} mainTranslation={mainTranslation} onOutputChange={ (event) => setMainTranslation(event.currentTarget.value) } onOutputReset={ () => setMainTranslation(translationResult?.mainTranslation ?? "") } />
             
             <MoreTranslations otherTranslations={translationResult?.otherTranslations} onWordClick={ (event) => setMainTranslation(event.currentTarget.innerHTML) } />
