@@ -58,7 +58,7 @@ export default function TranslateSection() {
 
             <LanguageSwitcher languages={languagesG} detectedLanguage={translationResult?.detectedLanguage} />
 
-            <UserInput onInputChange={ (event) => setSourceText(event.target.value) }  onButtonClick={ () => triggerQueryNew({ sourceLang: sourceLangRedux, targetLang: targetLangRedux, sourceText }, true) } sourceText={sourceText} />
+            <UserInput onInputChange={ (event) => setSourceText(event.target.value) }  onButtonClick={ () => triggerQueryNew({ sourceLang: sourceLangRedux, targetLang: targetLangRedux, sourceText: inputText }, true) } sourceText={sourceText} />
 
             <Output translationResult={translationResult} original={sourceText} mainTranslation={mainTranslation} onOutputChange={ (event) => setMainTranslation(event.currentTarget.value) } onOutputReset={ () => setMainTranslation(translationResult?.mainTranslation ?? "") } />
             
