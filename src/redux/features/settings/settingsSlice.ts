@@ -42,7 +42,10 @@ export const settingsSlice = createSlice({
             state.selectedDictionaryName = action.payload;
             saveSettings(state);
         },
-        setTranslateAutomatically: () => {},
+        setTranslateAutomatically: (state: Settings, action: PayloadAction<boolean>) => { 
+            state.translateAutomatically = action.payload;
+            saveSettings(state);
+        },
         setHideTranslations: () => {},
     },
 });

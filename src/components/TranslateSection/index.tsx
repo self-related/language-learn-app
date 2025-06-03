@@ -12,7 +12,7 @@ import { useAppSelector } from "../../redux/store";
 export default function TranslateSection() {
 
 // states
-    const [autoTranslation, setAutoTranslation] = useState(true);
+    const translateAutomatically = useAppSelector(state => state.settingsSlice.translateAutomatically);
 
     const [sourceText, setSourceText] = useState("");
     const [mainTranslation, setMainTranslation ] = useState<string>("");
@@ -32,13 +32,6 @@ export default function TranslateSection() {
 
 // callbacks
 
-    const handleAutoTranslationCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.checked) 
-            setAutoTranslation(true);
-        else 
-            setAutoTranslation(false);
-    };
-
 
 
 // effects
@@ -46,9 +39,9 @@ export default function TranslateSection() {
 
     // auto-translation effect
     useEffect(() => {
-        if (inputText !== "" && autoTranslation)
+        if (inputText !== "" && translateAutomatically)
             triggerQueryNew({ sourceLang: sourceLangRedux, targetLang: targetLangRedux, sourceText: inputText }, true);
-    }, [autoTranslation, sourceText, sourceLangRedux, targetLangRedux, triggerQueryNew, inputText]);
+    }, [translateAutomatically, sourceText, sourceLangRedux, targetLangRedux, triggerQueryNew, inputText]);
 
 
     // change main translation state on query response
@@ -65,7 +58,7 @@ export default function TranslateSection() {
 
             <LanguageSwitcher languages={languagesG} detectedLanguage={translationResult?.detectedLanguage} />
 
-            <UserInput autoTranslation={autoTranslation} onInputChange={ (event) => setSourceText(event.target.value) } onCheckboxChange={handleAutoTranslationCheckboxChange} onButtonClick={ () => triggerQueryNew({ sourceLang: sourceLangRedux, targetLang: targetLangRedux, sourceText }, true) } sourceText={sourceText} />
+            <UserInput onInputChange={ (event) => setSourceText(event.target.value) }  onButtonClick={ () => triggerQueryNew({ sourceLang: sourceLangRedux, targetLang: targetLangRedux, sourceText }, true) } sourceText={sourceText} />
 
             <Output translationResult={translationResult} original={sourceText} mainTranslation={mainTranslation} onOutputChange={ (event) => setMainTranslation(event.currentTarget.value) } onOutputReset={ () => setMainTranslation(translationResult?.mainTranslation ?? "") } />
             
