@@ -11,10 +11,10 @@ import { useAppSelector } from "../../redux/store";
 
 export default function TranslateSection() {
 
-// states
+    // states
     const translateAutomatically = useAppSelector(state => state.settingsSlice.translateAutomatically);
 
-    const [sourceText, setSourceText] = useState("");
+    // const [sourceText, setSourceText] = useState("");
     const [mainTranslation, setMainTranslation ] = useState<string>("");
 
 
@@ -22,26 +22,25 @@ export default function TranslateSection() {
     const sourceLangRedux = useAppSelector(slice => slice.settingsSlice.sourceLang);
     const targetLangRedux = useAppSelector(slice => slice.settingsSlice.targetLang);
     const inputText = useAppSelector(state => state.translateSlice.inputText);
-    const outputText = useAppSelector(state => state.translateSlice.outputText);
 
 
 
-// local variables
+    // local variables
     const [triggerQueryNew, {data}] = useLazyTranslateGoogleNewQuery();
     const translationResult = handleGoogleApi(data, sourceLangRedux, targetLangRedux);
 
-// callbacks
+    // callbacks
 
 
 
-// effects
+    // effects
 
 
     // auto-translation effect
     useEffect(() => {
         if (inputText !== "" && translateAutomatically)
             triggerQueryNew({ sourceLang: sourceLangRedux, targetLang: targetLangRedux, sourceText: inputText }, true);
-    }, [translateAutomatically, sourceText, sourceLangRedux, targetLangRedux, triggerQueryNew, inputText]);
+    }, [translateAutomatically, sourceLangRedux, targetLangRedux, triggerQueryNew, inputText]);
 
 
     // change main translation state on query response
@@ -58,9 +57,9 @@ export default function TranslateSection() {
 
             <LanguageSwitcher languages={languagesG} detectedLanguage={translationResult?.detectedLanguage} />
 
-            <UserInput onInputChange={ (event) => setSourceText(event.target.value) }  onButtonClick={ () => triggerQueryNew({ sourceLang: sourceLangRedux, targetLang: targetLangRedux, sourceText: inputText }, true) } sourceText={sourceText} />
+            <UserInput  onButtonClick={ () => triggerQueryNew({ sourceLang: sourceLangRedux, targetLang: targetLangRedux, sourceText: inputText }, true) } />
 
-            <Output translationResult={translationResult} original={sourceText} mainTranslation={mainTranslation} onOutputChange={ (event) => setMainTranslation(event.currentTarget.value) } onOutputReset={ () => setMainTranslation(translationResult?.mainTranslation ?? "") } />
+            <Output translationResult={translationResult} original={inputText} mainTranslation={mainTranslation} onOutputChange={ (event) => setMainTranslation(event.currentTarget.value) } onOutputReset={ () => setMainTranslation(translationResult?.mainTranslation ?? "") } />
             
             <MoreTranslations otherTranslations={translationResult?.otherTranslations} onWordClick={ (event) => setMainTranslation(event.currentTarget.innerHTML) } />
 

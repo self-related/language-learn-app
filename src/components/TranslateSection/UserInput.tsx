@@ -3,18 +3,11 @@ import { updateInputText } from "../../redux/features/translate/translateSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 
 interface UserInputProps {
-    sourceText: string,
-    onInputChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void,
     onButtonClick: () => void,
 }
 
-export default function UserInput(props: UserInputProps) {
-    const { 
-        //sourceText, 
-        // onInputChange, 
-        onButtonClick 
-    } = props;
-
+export default function UserInput({ onButtonClick }: UserInputProps) {
+    
     // Redux
     const dispatch = useAppDispatch();
 

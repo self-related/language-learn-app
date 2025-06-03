@@ -11,7 +11,7 @@ interface OutputProps {
     translationResult?: TranslationResult,
 }
 
-export default function Output({ translationResult, original, mainTranslation, onOutputChange, onOutputReset}: OutputProps) {
+export default function Output({ translationResult, mainTranslation, onOutputReset}: OutputProps) {
     const dispatch = useAppDispatch();
 
     // Redux states
