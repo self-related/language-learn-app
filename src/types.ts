@@ -19,3 +19,8 @@ export interface TranslationResult {
     otherTranslations?: OtherTranslations[],
     detectedLanguage?: string,
 }
+
+export enum SortBy {
+    RecentlyAdded,
+    Name
+}

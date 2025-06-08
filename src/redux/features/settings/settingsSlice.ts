@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { SortBy } from "../../../types";
 
 interface Settings {
     currentApi: string,
@@ -7,15 +8,17 @@ interface Settings {
     selectedDictionaryName: string,
     translateAutomatically: boolean,
     hideTranslations: boolean,
+    sortBy: SortBy | null,
     // ToDo: sortBy
 }
 
-const saveSettings = (state: Settings) => localStorage.setItem("settings", JSON.stringify(state));
+function saveSettings(state: Settings) {
+    localStorage.setItem("settings", JSON.stringify(state));
+}    
 
 const savedSettings = localStorage.getItem("settings");
 
-const initialState: Settings = savedSettings 
-    ? JSON.parse(savedSettings) 
+const initialState: Settings = (savedSettings != null) ? JSON.parse(savedSettings) 
     : {
     currentApi: "google",
     sourceLang: "auto",
@@ -23,13 +26,14 @@ const initialState: Settings = savedSettings
     selectedDictionaryName: "",
     translateAutomatically: true,
     hideTranslations: false,
+    sortBy: null,
 };
 
 export const settingsSlice = createSlice({
     name: "settingsSlice",
     initialState,
     reducers: {
-        setCurrentApi: () => {},
+        setCurrentApi: () => {}, // ToDo
         setSourceLang: (state: Settings, action: PayloadAction<string>) => {
             state.sourceLang = action.payload;
             saveSettings(state);
@@ -46,9 +50,21 @@ export const settingsSlice = createSlice({
             state.translateAutomatically = action.payload;
             saveSettings(state);
         },
-        setHideTranslations: () => {},
+        setSortBy: (state: Settings, action: PayloadAction<SortBy | null>) => {
+            state.sortBy = action.payload;
+            saveSettings(state);
+        },
+        setHideTranslations: () => {}, // ToDo
     },
 });
 
 
-export const { setSourceLang, setTargetLang, setSelectedDictionaryName, setTranslateAutomatically, setHideTranslations } = settingsSlice.actions;
+export const { 
+    setSourceLang, 
+    setTargetLang, 
+    setSelectedDictionaryName, 
+    setTranslateAutomatically, 
+    setHideTranslations, 
+    setSortBy,
+
+} = settingsSlice.actions;

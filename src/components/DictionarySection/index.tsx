@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { TranslationResult } from "../../types";
+import { SortBy, TranslationResult } from "../../types";
 import Category from "./Category";
 import { sortByName } from "./utils";
-import { setSelectedDictionaryName } from "../../redux/features/settings/settingsSlice";
+import { setSelectedDictionaryName, setSortBy } from "../../redux/features/settings/settingsSlice";
 
 
 /*  ToDo: 
@@ -16,11 +16,6 @@ import { setSelectedDictionaryName } from "../../redux/features/settings/setting
     - sort by addedDate
  */
 
-    enum Sort {
-        RecentlyAdded,
-        Name
-    }
-
 
 export default function DictionarySection() {
     /** Redux State */
@@ -28,10 +23,7 @@ export default function DictionarySection() {
 
     const dictionaries = useAppSelector(state => state.dictionarySlice);
     const currentDictionaryNameRedux = useAppSelector(state => state.settingsSlice.selectedDictionaryName);
-
-    
-    /*** Component states */
-    const [sortBy, setSortBy] = useState<Sort | null>(Sort.Name);
+    const sortBy = useAppSelector(state => state.settingsSlice.sortBy);
 
 
 
@@ -66,8 +58,9 @@ export default function DictionarySection() {
 
     let currentDictionary: TranslationResult[] | undefined = dictionaries[currentDictionaryNameRedux];
 
+    // ToDo: move sorting to utils
     switch (sortBy) {
-        case (Sort.Name): currentDictionary = sortByName(currentDictionary);
+        case (SortBy.Name): currentDictionary = sortByName(currentDictionary);
         break;
     }
     
@@ -92,8 +85,8 @@ export default function DictionarySection() {
                 </select>
 
                 <div className="h-7">
-                    <button onClick={() => setSortBy(sortBy => sortBy == Sort.Name ? null : Sort.Name)} 
-                        className={`h-full aspect-square rounded-md ${sortBy == Sort.Name ? "bg-[#e29d48] hover:bg-[#eab676]" : "bg-[#e2e248] hover:bg-[#f3f37b]"}  active:bg-[#e29d48] text-black cursor-pointer`}>
+                    <button onClick={() => dispatch(setSortBy(sortBy ? null : SortBy.Name))} 
+                        className={`h-full aspect-square rounded-md ${sortBy == SortBy.Name ? "bg-[#e29d48] hover:bg-[#eab676]" : "bg-[#e2e248] hover:bg-[#f3f37b]"}  active:bg-[#e29d48] text-black cursor-pointer`}>
                         Aa
                      </button>
                 </div>
