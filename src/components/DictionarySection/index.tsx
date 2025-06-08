@@ -84,9 +84,10 @@ export default function DictionarySection() {
                     }
                 </select>
 
+                 {/* sort button */}
                 <div className="h-7">
                     <button onClick={() => dispatch(setSortBy(sortBy ? null : SortBy.Name))} 
-                        className={`h-full aspect-square rounded-md ${sortBy == SortBy.Name ? "bg-[#e29d48] hover:bg-[#eab676]" : "bg-[#e2e248] hover:bg-[#f3f37b]"}  active:bg-[#e29d48] text-black cursor-pointer`}>
+                        className={`h-full aspect-square rounded-md ${sortBy == SortBy.Name ? "bg-[#e29d48] hover:bg-[#eab676] shadow-[0_0_8px_white]" : "bg-[#e2e248] hover:bg-[#f3f37b]"}  active:bg-[#e29d48] text-black cursor-pointer`}>
                         Aa
                      </button>
                 </div>
