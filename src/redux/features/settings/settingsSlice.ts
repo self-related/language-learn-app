@@ -54,7 +54,10 @@ export const settingsSlice = createSlice({
             state.sortBy = action.payload;
             saveSettings(state);
         },
-        setHideTranslations: () => {}, // ToDo
+        switchHideTranslations: (state: Settings) => {
+            state.hideTranslations = !state.hideTranslations;
+            saveSettings(state);
+        },
     },
 });
 
@@ -64,7 +67,7 @@ export const {
     setTargetLang, 
     setSelectedDictionaryName, 
     setTranslateAutomatically, 
-    setHideTranslations, 
+    switchHideTranslations, 
     setSortBy,
 
 } = settingsSlice.actions;
