@@ -5,7 +5,6 @@ import { TranslationResult } from "../../types";
 
 interface DictionaryEntryProps {
     translation: TranslationResult,
-    key: number,
     dictionary: string,
 }
 
@@ -15,7 +14,7 @@ export default function DictionaryEntry({ translation, dictionary }: DictionaryE
     
     // Redux global states 
     const hideTranslationsSetting = useAppSelector(state => state.settingsSlice.hideTranslations);
-
+    const allDictionaries = useAppSelector(state => state.dictionarySlice);
 
     // Local states
     const [hideTranslation, setHideTranslation] = useState(hideTranslationsSetting);
@@ -37,7 +36,7 @@ export default function DictionaryEntry({ translation, dictionary }: DictionaryE
     // Effects
     useEffect(() => {
         setHideTranslation(hideTranslationsSetting);
-    }, [hideTranslationsSetting]);
+    }, [hideTranslationsSetting, allDictionaries]); // allDictionaries - reset hiding translation state to global state, if word list was changed
 
     
 
