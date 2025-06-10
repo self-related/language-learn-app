@@ -1,5 +1,6 @@
+import { useEffect, useState } from "react";
 import { markLearned } from "../../redux/features/dictionary/dictionarySlice";
-import { useAppDispatch } from "../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { TranslationResult } from "../../types";
 
 interface DictionaryEntryProps {
@@ -10,7 +11,17 @@ interface DictionaryEntryProps {
 
 export default function DictionaryEntry({ translation, dictionary }: DictionaryEntryProps) {
     const dispatch = useAppDispatch();
+    
+    
+    // Redux global states 
+    const hideTranslationsSetting = useAppSelector(state => state.settingsSlice.hideTranslations);
 
+
+    // Local states
+    const [hideTranslation, setHideTranslation] = useState(hideTranslationsSetting);
+    
+
+    // Callbacks
     const handleRemoveButton = (original?: string) => {
         dispatch({type: "dictionarySlice/deleteTranslation", payload: {dictionary, original}});
     }
@@ -23,6 +34,14 @@ export default function DictionaryEntry({ translation, dictionary }: DictionaryE
 
     
 
+    // Effects
+    useEffect(() => {
+        setHideTranslation(hideTranslationsSetting);
+    }, [hideTranslationsSetting]);
+
+    
+
+
     return (
     <li className={`flex flex-col relative items-start bg-[#414343] px-3 py-2 rounded-sm ${translation.learned && "text-gray-400"}`}>
         <button onClick={ () => handleRemoveButton(translation?.original) } 
@@ -34,7 +53,7 @@ export default function DictionaryEntry({ translation, dictionary }: DictionaryE
         >✓</button>
 
         {/* ToDo: 
-        - Button to use current translation in both inputs
+        - Button to use current translation in input and output
         - Button to choose other translations (if exist)  
         */}
 
@@ -45,7 +64,11 @@ export default function DictionaryEntry({ translation, dictionary }: DictionaryE
         <p className="max-w-[92%] break-words mt-1">
             <span className={`${translation.learned ? "text-green-200" : "text-red-300"}`}>
                 {targetLang}:&nbsp;
-            </span>{translation?.mainTranslation}
+            </span>
+            <span onClick={() => setHideTranslation(state => !state)}
+                className={`cursor-pointer ${ hideTranslation ? "blur-xs" : "" }`}
+            >{translation?.mainTranslation}
+            </span>
         </p>
     </li>
     );
