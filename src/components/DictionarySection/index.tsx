@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { SortBy, TranslationResult } from "../../types";
 import Category from "./Category";
 import { sortByName } from "./utils";
-import { setSelectedDictionaryName, setSortBy } from "../../redux/features/settings/settingsSlice";
+import { setSelectedDictionaryName, setSortBy, switchHideTranslations } from "../../redux/features/settings/settingsSlice";
 
 
 /*  ToDo: 
@@ -24,6 +24,7 @@ export default function DictionarySection() {
     const dictionaries = useAppSelector(state => state.dictionarySlice);
     const currentDictionaryNameRedux = useAppSelector(state => state.settingsSlice.selectedDictionaryName);
     const sortBy = useAppSelector(state => state.settingsSlice.sortBy);
+    const hideTranslations = useAppSelector(state => state.settingsSlice.hideTranslations);
 
 
 
@@ -72,7 +73,7 @@ export default function DictionarySection() {
             <h2 className='text-2xl mb-4'>Dictionaries</h2>
 
              {/* dictionary selection panel */}
-             <div className="flex justify-between items-center mr-2">
+            <div className="flex justify-between items-center mr-2">
                 <select name="current-dictionary" id="current-dictionary" value={currentDictionaryNameRedux ?? ""} onChange={handleDictionaryChange}
                         className="cursor-pointer bg-[#505050] hover:bg-[#606060] p-2 rounded-sm">
                     {
@@ -84,15 +85,23 @@ export default function DictionarySection() {
                     }
                 </select>
 
-                 {/* sort button */}
-                <div className="h-7">
-                    <button onClick={() => dispatch(setSortBy(sortBy ? null : SortBy.Name))} 
-                        className={`h-full aspect-square rounded-md ${sortBy == SortBy.Name ? "bg-[#e29d48] hover:bg-[#eab676] shadow-[0_0_8px_white]" : "bg-[#e2e248] hover:bg-[#f3f37b]"}  active:bg-[#e29d48] text-black cursor-pointer`}>
-                        Aa
-                     </button>
-                </div>
 
-             </div>
+                 {/* buttons */}
+                <div className="h-7 flex gap-2">
+                     {/* hide button */}
+                    <button onClick={() => dispatch(switchHideTranslations())}
+                        className={`h-full px-1 rounded-md ${hideTranslations ? "bg-[#e29d48] hover:bg-[#eab676] shadow-[0_0_4px_white]" : "bg-[#e2e248] hover:bg-[#f3f37b]"}  active:bg-[#e29d48] text-black cursor-pointer`}
+                    >hide
+                    </button>
+                    
+                     {/* sort button */}
+                    <button onClick={() => dispatch(setSortBy(sortBy ? null : SortBy.Name))} 
+                        className={`h-full aspect-square rounded-md ${sortBy == SortBy.Name ? "bg-[#e29d48] hover:bg-[#eab676] shadow-[0_0_4px_white]" : "bg-[#e2e248] hover:bg-[#f3f37b]"}  active:bg-[#e29d48] text-black cursor-pointer`}>
+                        Aa
+                    </button>
+                    
+                </div>
+            </div>
 
              {/* dictionary div */}
             <div className="mt-4 py-4 bg-[#505050] min-w-[300px] w-full min-h-[250px] md:max-h-[65vh] max-h-[80vh] overflow-scroll rounded-md flex flex-col gap-y-4">
