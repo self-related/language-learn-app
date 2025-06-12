@@ -49,33 +49,56 @@ export default function DictionaryEntry({ translation, dictionary }: DictionaryE
 
 
     return (
-    <li className={`flex flex-col relative items-start bg-[#414343] px-3 py-2 rounded-sm ${translation.learned && "text-gray-400"}`}>
-        <button onClick={ () => handleRemoveButton(translation?.original) } 
-            className="self-end absolute text-red-500 ml-1.5 rounded-sm h-6 aspect-square text-l  cursor-pointer hover:bg-orange-300 active:bg-orange-900"
-        >X</button>
+    <li className={`flex bg-[#414343] px-3 py-2 rounded-sm ${translation.learned && "text-gray-400"}`}>
 
-        <button onClick={ handleMarkLearnedButton } 
-            className={`self-end absolute top-8  ml-1.5 rounded-sm h-6 aspect-square text-l  cursor-pointer ${translation.learned ? "text-green-500 hover:bg-[#8dffab55] active:bg-[#275e36]" : "text-gray-400 hover:bg-[#6b6b6bd2] active:bg-[#27272755]"}  `}
-        >✓</button>
 
         {/* ToDo: 
         - Button to use current translation in input and output
         - Button to choose other translations (if exist)  
         */}
 
-        <p className="max-w-[92%] break-words">
-           <span className={`${translation.learned ? "text-green-200" : "text-red-300"}`}>{sourceLang}:&nbsp;</span>{translation?.original}
-        </p>
+        {/* original word + translation */}
+        <div className="w-0 grow flex flex-col justify-around break-words">
+            {/* original word */}
+            <p className="">
+                <span className={`${translation.learned ? "text-green-200" : "text-red-300"}`}>
+                    {sourceLang}:&nbsp;
+                </span>
+               {translation?.original}
+            </p>
 
-        <p className="max-w-[92%] break-words mt-1">
-            <span className={`${translation.learned ? "text-green-200" : "text-red-300"}`}>
-                {targetLang}:&nbsp;
-            </span>
-            <span onClick={handleTranslationClick}
-                className={`${ hideTranslation ? "blur-xs" : "" } ${hideTranslationsSetting ? "cursor-pointer" : ""}`}
-            >{translation?.mainTranslation}
-            </span>
-        </p>
+            {/* translation */}
+            <p className="break-words mt-1">
+                <span className={`${translation.learned ? "text-green-200" : "text-red-300"}`}>
+                    {targetLang}:&nbsp;
+                </span>
+                
+                <span onClick={handleTranslationClick}
+                    className={`${ hideTranslation ? "blur-xs" : "" } ${hideTranslationsSetting ? "cursor-pointer" : ""}`}
+                >{translation?.mainTranslation}
+                </span>
+            </p>
+        </div>
+
+        
+         {/* buttons */}
+        <div className="w-min self-start">
+            <button onClick={ () => handleRemoveButton(translation?.original) } 
+                className="block text-red-500 rounded-sm h-6 aspect-square text-l cursor-pointer hover:bg-orange-300 active:bg-orange-900"
+            >X
+            </button>
+
+            <button onClick={ handleMarkLearnedButton } 
+                className={`block rounded-sm h-6 aspect-square text-l  cursor-pointer ${translation.learned ? "text-green-500 hover:bg-[#8dffab55] active:bg-[#275e36]" : "text-gray-400 hover:bg-[#6b6b6bd2] active:bg-[#27272755]"}  `}
+            >✓
+            </button>
+
+            <button className={`flex justify-center items-center rounded-sm h-6 aspect-square text-l text-center  cursor-pointer text-gray-400 hover:bg-[#6b6b6bd2] active:bg-[#27272755]`}>
+                <p style={{writingMode: "vertical-lr"}} className="text-center align-bottom w-3">...</p>
+            </button>
+
+
+        </div>
     </li>
     );
 }
