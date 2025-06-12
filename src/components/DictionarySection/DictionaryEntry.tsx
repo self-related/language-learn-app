@@ -29,6 +29,13 @@ export default function DictionaryEntry({ translation, dictionary }: DictionaryE
         dispatch(markLearned(translation));
     };
 
+    const handleTranslationClick = () => {
+        if (hideTranslationsSetting) {
+            setHideTranslation(state => !state);
+        }
+    };
+    
+
     const [sourceLang, targetLang] = translation.dictionaryName!.split(" - "); // get languages of the current dictionary
 
     
@@ -64,8 +71,8 @@ export default function DictionaryEntry({ translation, dictionary }: DictionaryE
             <span className={`${translation.learned ? "text-green-200" : "text-red-300"}`}>
                 {targetLang}:&nbsp;
             </span>
-            <span onClick={() => setHideTranslation(state => !state)}
-                className={`cursor-pointer ${ hideTranslation ? "blur-xs" : "" }`}
+            <span onClick={handleTranslationClick}
+                className={`${ hideTranslation ? "blur-xs" : "" } ${hideTranslationsSetting ? "cursor-pointer" : ""}`}
             >{translation?.mainTranslation}
             </span>
         </p>
