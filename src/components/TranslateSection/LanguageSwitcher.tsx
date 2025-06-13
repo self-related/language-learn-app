@@ -42,7 +42,7 @@ export default function LanguageSwitcher(props: LanguageSwitcherProps) {
         <div id="language-switcher" className="flex w-full justify-between">
 
             <select name="current-lang" id="current-lang" value={sourceLangRedux}  onChange={(e) => dispatch(setSourceLang(e.target.value))}
-                    className="cursor-pointer p-2 grow w-0 bg-[#505050] hover:bg-[#606060] rounded-sm">
+                    className="cursor-pointer p-2 grow w-0 bg-[#505050] hover:bg-[#606060] rounded-sm" style={{textShadow: "black 0.08rem 0.08rem 0.05rem"}}>
                 {
                     Object.keys(languages).map((key) => (
                         <option key={key} value={key}> {`${languages[key]}${key == "auto" ? detectedLanguageName : ""}`} </option>
@@ -53,7 +53,7 @@ export default function LanguageSwitcher(props: LanguageSwitcherProps) {
             <button onClick={switchLangs} className="mx-2 min-w-max cursor-pointer hover:bg-[#606060] p-1 rounded-sm">&lt;-&gt;</button>
             
             <select name="target-lang" id="target-lang" value={targetLangRedux} onChange={(e) => dispatch(setTargetLang(e.target.value))}
-                    className="cursor-pointer p-2 grow w-0 bg-[#505050] hover:bg-[#606060] rounded-sm">
+                    className="cursor-pointer p-2 grow w-0 bg-[#505050] hover:bg-[#606060] rounded-sm" style={{textShadow: "black 0.08rem 0.08rem 0.05rem"}}>
                 {
                     Object.keys(languages).slice(1).map((key) => (<option key={key} value={key}>{languages[key]}</option>))
                 }

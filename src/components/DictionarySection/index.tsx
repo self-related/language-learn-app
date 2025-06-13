@@ -74,7 +74,7 @@ export default function DictionarySection() {
 
              {/* dictionary selection panel */}
             <div className="flex justify-between items-center mr-2">
-                <select name="current-dictionary" id="current-dictionary" value={currentDictionaryNameRedux ?? ""} onChange={handleDictionaryChange}
+                <select name="current-dictionary" id="current-dictionary" value={currentDictionaryNameRedux ?? ""} onChange={handleDictionaryChange} style={{textShadow: "black 0.08rem 0.08rem 0.05rem"}}
                         className="cursor-pointer bg-[#505050] hover:bg-[#606060] p-2 rounded-sm">
                     {
                         Object.keys(dictionaries).length > 0 
@@ -90,13 +90,13 @@ export default function DictionarySection() {
                 <div className="h-7 flex gap-2">
                      {/* hide button */}
                     <button onClick={() => dispatch(switchHideTranslations())}
-                        className={`h-full px-1 rounded-md ${hideTranslations ? "bg-[#e29d48] hover:bg-[#eab676] shadow-[0_0_4px_white]" : "bg-[#e2e248] hover:bg-[#f3f37b]"}  active:bg-[#e29d48] text-black cursor-pointer`}
+                        className={`h-full px-1 rounded-md ${hideTranslations ? "bg-[#ed9427] hover:bg-orange-300" : "bg-[#606060] hover:bg-[#707070]"}  active:bg-orange-700  cursor-pointer`} style={{textShadow: "black 0.08rem 0.08rem 0.05rem"}}
                     >hide
                     </button>
                     
                      {/* sort button */}
                     <button onClick={() => dispatch(setSortBy(sortBy ? null : SortBy.Name))} 
-                        className={`h-full aspect-square rounded-md ${sortBy == SortBy.Name ? "bg-[#e29d48] hover:bg-[#eab676] shadow-[0_0_4px_white]" : "bg-[#e2e248] hover:bg-[#f3f37b]"}  active:bg-[#e29d48] text-black cursor-pointer`}>
+                        className={`h-full aspect-square rounded-md ${sortBy == SortBy.Name ? "bg-[#ed9427] hover:bg-orange-300 " : "bg-[#606060] hover:bg-[#707070]"}  active:bg-orange-700 cursor-pointer`} style={{textShadow: "black 0.08rem 0.08rem 0.05rem"}}>
                         Aa
                     </button>
                     

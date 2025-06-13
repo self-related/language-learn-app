@@ -41,12 +41,12 @@ export default function Output({ translationResult, mainTranslation, onOutputRes
 
             {/* buttons */}
             <div className="flex justify-end">
-                <button onClick={onOutputReset}
+                <button onClick={onOutputReset} style={{textShadow: "black 0.08rem 0.08rem 0.05rem"}}
                     className='px-2 ml-2 bg-gray-700 hover:bg-gray-600 active:bg-gray-800 accent-orange-400 outline-orange-400 focus-visible::outline-2 cursor-pointer rounded-sm'
                 >Reset
                 </button>
 
-                <button onClick={handleAddTranslationClick}
+                <button onClick={handleAddTranslationClick} style={{textShadow: "black 0.08rem 0.08rem 0.05rem"}}
                     className='px-2 ml-2 bg-gray-700 hover:bg-gray-600 active:bg-gray-800 accent-orange-400 outline-orange-400 focus-visible:outline-2 cursor-pointer rounded-sm'
                 >Add
                 </button>
