@@ -105,6 +105,9 @@ export default function DictionarySection() {
 
              {/* dictionary div */}
             <div className="mt-4 py-4 bg-[#505050] min-w-[300px] w-full min-h-[250px] md:max-h-[65vh] max-h-[80vh] overflow-scroll rounded-md flex flex-col gap-y-4">
+                
+                {/* ToDo: Make categories wrappers */}
+                
                 <Category name="Not Learned" words={notLearnedWords} dictionaryName={currentDictionaryNameRedux} />
                 <Category name="Learned" words={learnedWords} dictionaryName={currentDictionaryNameRedux} />
             </div>

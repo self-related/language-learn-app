@@ -18,6 +18,7 @@ export default function DictionaryEntry({ translation, dictionary }: DictionaryE
 
     // Local states
     const [hideTranslation, setHideTranslation] = useState(hideTranslationsSetting);
+    const [showDropdown, setShowDropdown] = useState(false);
     
 
     // Callbacks
@@ -93,18 +94,24 @@ export default function DictionaryEntry({ translation, dictionary }: DictionaryE
             >✓
             </button>
 
-            <button className={`relative flex justify-center items-center rounded-sm h-6 aspect-square text-l text-center  cursor-pointer text-gray-400 hover:bg-[#6b6b6bd2] active:bg-[#27272755] has-[div:hover]:bg-transparent`}>
+            <button onClick={() => setShowDropdown(status => !status)} 
+                className={`relative flex justify-center items-center rounded-sm h-6 aspect-square text-l text-center  cursor-pointer text-gray-400 hover:bg-[#6b6b6bd2] active:bg-[#27272755] has-[div:hover]:bg-transparent`}
+            >
                 <p style={{writingMode: "vertical-lr"}} className="text-center align-bottom w-3">...</p>
 
                 {/* dropdown menu */}
-                <div className="absolute right-[2rem] bottom-0 flex items-center gap-2 w-max rounded-sm bg-[#656565] text-white text-sm ">
-                    <p className="px-1 py-1 rounded-sm hover:bg-[#808080] active:bg-[#505050]">
-                        change
-                    </p>
-                    <p className="px-1 py-1 rounded-sm hover:bg-[#808080] active:bg-[#505050]">
-                        reverse
-                    </p>
-                </div>
+                {
+                    showDropdown && (
+                        <div className="absolute right-[2rem] bottom-0 flex items-center gap-2 w-max rounded-sm bg-[#656565] text-white text-sm ">
+                            <p className="px-1.5 py-1 rounded-sm hover:bg-[#808080] active:bg-[#505050]">
+                                change
+                            </p>
+                            <p className="px-1.5 py-1 rounded-sm hover:bg-[#808080] active:bg-[#505050]">
+                                reverse
+                            </p>
+                        </div>
+                    )
+                }
 
             </button>
 
