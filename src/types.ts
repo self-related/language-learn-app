@@ -24,3 +24,14 @@ export enum SortBy {
     RecentlyAdded,
     Name
 }
+
+
+
+export interface ContextMenuData {
+    
+    // temp fields
+    entryId?: string,
+    word?: TranslationResult,
+    x: number,
+    y: number,
+}

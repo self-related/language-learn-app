@@ -1,15 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { markLearned } from "../../redux/features/dictionary/dictionarySlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { TranslationResult } from "../../types";
-import ContextMenu from "./ContextMenu";
+import { ContextMenuData, TranslationResult } from "../../types";
+import DictionaryContextMenu from "./DictionaryContextMenu";
 
 interface DictionaryEntryProps {
     translation: TranslationResult,
     dictionary: string,
+    setContextMenu?: React.Dispatch<React.SetStateAction<ContextMenuData | null>>
 }
 
-export default function DictionaryEntry({ translation, dictionary }: DictionaryEntryProps) {
+export default function DictionaryEntry({ translation, dictionary, setContextMenu }: DictionaryEntryProps) {
     const dispatch = useAppDispatch();
     
     
@@ -40,6 +41,11 @@ export default function DictionaryEntry({ translation, dictionary }: DictionaryE
 
     const [sourceLang, targetLang] = translation.dictionaryName!.split(" - "); // get languages of the current dictionary
 
+
+
+    // Refs
+    const dictionaryEntryElement = useRef<null | HTMLLIElement>(null);
+
     
 
     // Effects
@@ -47,11 +53,27 @@ export default function DictionaryEntry({ translation, dictionary }: DictionaryE
         setHideTranslation(hideTranslationsSetting);
     }, [hideTranslationsSetting, allDictionaries]); // allDictionaries - reset hiding translation state to global state, if word list was changed
 
+    useEffect(() => {
+        const currentDictionaryEntryElement = dictionaryEntryElement.current;
+
+        const setContextMenuListener = (ev: MouseEvent) => {
+            const x = ev.pageX;
+            const y = ev.pageY;
+            ev.preventDefault();
+            setContextMenu!({x, y,});
+        };
+
+        currentDictionaryEntryElement?.addEventListener("contextmenu", setContextMenuListener);
+
+        return () => currentDictionaryEntryElement?.removeEventListener("contextmenu", setContextMenuListener);
+    });
     
 
 
     return (
-    <li className={`flex bg-[#414343] px-3 py-2 rounded-sm ${translation.learned && "text-gray-400"}`}>
+    <li ref={dictionaryEntryElement}
+        className={`flex bg-[#414343] px-3 py-2 rounded-sm ${translation.learned && "text-gray-400"}`}
+    >
 
 
         {/* ToDo: 
@@ -102,7 +124,7 @@ export default function DictionaryEntry({ translation, dictionary }: DictionaryE
 
                 {/* dropdown menu */}
                 {
-                    showDropdown && <ContextMenu />
+                    showDropdown && <DictionaryContextMenu />
                 }
 
             </button>

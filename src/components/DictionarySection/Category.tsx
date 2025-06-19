@@ -1,14 +1,15 @@
 import { useState } from "react";
-import { TranslationResult } from "../../types";
+import { ContextMenuData, TranslationResult } from "../../types";
 import DictionaryEntry from "./DictionaryEntry";
 
 interface CategoryProps {
     name: string,
     dictionaryName: string,
     words?: TranslationResult[],
+    setContextMenu?: React.Dispatch<React.SetStateAction<ContextMenuData | null>>
 }
 
-export default function Category({name, words, dictionaryName}: CategoryProps) {
+export default function Category({name, words, dictionaryName, setContextMenu}: CategoryProps) {
     const [collapsed, setCollapsed] = useState(false);
     const wordsEmpty = !words || words?.length === 0;
 
@@ -26,7 +27,7 @@ export default function Category({name, words, dictionaryName}: CategoryProps) {
             {
                 !collapsed && !wordsEmpty && (
                     <ul className="list-none mt-3 pl-2 bg-[#505050] min-w-[300px] rounded-md flex flex-col gap-y-3">{words?.map((translation, index) => (
-                        <DictionaryEntry key={index} translation={translation} dictionary={dictionaryName}/>
+                        <DictionaryEntry key={index} translation={translation} dictionary={dictionaryName} setContextMenu={setContextMenu}/>
                     ))}</ul>
                 )
             }

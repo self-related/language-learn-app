@@ -1,10 +1,9 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { SortBy, TranslationResult } from "../../types";
+import { ContextMenuData, SortBy, TranslationResult } from "../../types";
 import Category from "./Category";
 import { sortByName } from "./utils";
 import { setSelectedDictionaryName, setSortBy, switchHideTranslations } from "../../redux/features/settings/settingsSlice";
-
 
 /*  ToDo: 
     - move currentDictonary state to redux
@@ -16,16 +15,19 @@ import { setSelectedDictionaryName, setSortBy, switchHideTranslations } from "..
     - sort by addedDate
  */
 
+    interface Props {
+        setContextMenu?: React.Dispatch<React.SetStateAction<ContextMenuData | null>>
+    }
 
-export default function DictionarySection() {
+
+export default function DictionarySection({ setContextMenu }: Props) {
     /** Redux State */
     const dispatch = useAppDispatch();
 
     const dictionaries = useAppSelector(state => state.dictionarySlice);
     const currentDictionaryNameRedux = useAppSelector(state => state.settingsSlice.selectedDictionaryName);
     const sortBy = useAppSelector(state => state.settingsSlice.sortBy);
-    const hideTranslations = useAppSelector(state => state.settingsSlice.hideTranslations);
-
+    const hideTranslations = useAppSelector(state => state.settingsSlice.hideTranslations); 
 
 
     /** Callbacks */
@@ -69,7 +71,7 @@ export default function DictionarySection() {
     const notLearnedWords = currentDictionary?.filter(word => !word.learned);
     
     return (
-        <section id="dictionary-section" className="md:w-[40%] w-[80%] md:min-w-[350px] mb-8">
+        <section id="dictionary-section" className="md:w-[40%] w-[80%] md:min-w-[350px] mb-8 relative">
             <h2 className='text-2xl mb-4'>Dictionaries</h2>
 
              {/* dictionary selection panel */}
@@ -108,8 +110,8 @@ export default function DictionarySection() {
                 
                 {/* ToDo: Make categories wrappers */}
                 
-                <Category name="Not Learned" words={notLearnedWords} dictionaryName={currentDictionaryNameRedux} />
-                <Category name="Learned" words={learnedWords} dictionaryName={currentDictionaryNameRedux} />
+                <Category name="Not Learned" words={notLearnedWords} dictionaryName={currentDictionaryNameRedux} setContextMenu={setContextMenu} />
+                <Category name="Learned" words={learnedWords} dictionaryName={currentDictionaryNameRedux} setContextMenu={setContextMenu}/>
             </div>
         </section>
     );
