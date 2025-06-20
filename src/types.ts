@@ -31,7 +31,7 @@ export interface ContextMenuData {
     
     // temp fields
     entryId?: string,
-    word?: TranslationResult,
+    translation: TranslationResult,
     x: number,
     y: number,
 }

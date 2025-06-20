@@ -1,6 +1,7 @@
 import { OtherTranslations } from "../../types";
 
 interface Props {
+    // ToDo: Move to redux
     otherTranslations: OtherTranslations[] | undefined,
     onWordClick: (event: React.MouseEvent) => void
 }

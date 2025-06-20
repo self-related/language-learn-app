@@ -60,7 +60,7 @@ export default function DictionaryEntry({ translation, dictionary, setContextMen
             const x = ev.pageX;
             const y = ev.pageY;
             ev.preventDefault();
-            setContextMenu!({x, y,});
+            setContextMenu!({x, y, translation: translation });
         };
 
         currentDictionaryEntryElement?.addEventListener("contextmenu", setContextMenuListener);
