@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLazyTranslateGoogleNewQuery } from "../../redux/features/api/apiSlice";
+import { useLazyTranslateGoogleNewQuery, useLazyTranslationResultQuery } from "../../redux/features/api/apiSlice";
 import UserInput from "./UserInput";
 import Output from "./Output";
 import MoreTranslations from "./MoreTranslations";
@@ -26,22 +26,18 @@ export default function TranslateSection() {
 
 
     // local variables
-    const [triggerQueryNew, {data, isFetching, isError}] = useLazyTranslateGoogleNewQuery();
-    const translationResult = handleGoogleApi(data, sourceLangRedux, targetLangRedux);
+    const [triggerQueryNew, {data, isFetching, isError}] = useLazyTranslateGoogleNewQuery(); // deprecate and remove
+    const translationResult = handleGoogleApi(data, sourceLangRedux, targetLangRedux); // deprecate and remove
 
-    // callbacks
-
-
-
-    // effects
-
+    const [triggerFetchTranslation, /* { data, isFetching, isError } */] = useLazyTranslationResultQuery(); // new
 
     // auto-translation effect
     useEffect(() => {
-        if (inputText !== "" && translateAutomatically)
-            triggerQueryNew({ sourceLang: sourceLangRedux, targetLang: targetLangRedux, sourceText: inputText }, true);
-    }, [translateAutomatically, sourceLangRedux, targetLangRedux, triggerQueryNew, inputText]);
-
+        if (inputText !== "" && translateAutomatically) {
+            triggerQueryNew({ sourceLang: sourceLangRedux, targetLang: targetLangRedux, sourceText: inputText }, true); // Deprecate and remove
+            triggerFetchTranslation({ sourceLang: sourceLangRedux, targetLang: targetLangRedux, sourceText: inputText }, true); // new, transformed and ready to use
+        }
+    }, [translateAutomatically, sourceLangRedux, targetLangRedux, triggerQueryNew, inputText, triggerFetchTranslation]);
 
     // change main translation state on query response
     useEffect(() => {

@@ -1,5 +1,15 @@
+
+
+// ToDo? 
+// Rename this slice to googleApiSlice
+// OR
+// Change endpoint names?
+
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"; // for react
 import { GoogleApiRespond } from "./types";
+import { TranslationResult } from "../../../types";
+import { languagesG } from "../../../consts";
+import { store } from "../../store";
 
 export interface Query {
     sourceLang: string,
@@ -7,7 +17,14 @@ export interface Query {
     sourceText: string
 }
 
+const getDictionaryName = (response: GoogleApiRespond) => {
+    const {sourceLang, targetLang } = store.getState().settingsSlice;
+    
+    return sourceLang == "auto"
+    ? `${languagesG[response.src] ?? response.src ?? "unknown"} - ${languagesG[targetLang] ?? targetLang}`
+    : `${languagesG[sourceLang] || sourceLang} - ${languagesG[targetLang] || targetLang}`;
 
+};
 
 export const apiSlice = createApi({
     reducerPath: "apiSlice",
@@ -15,31 +32,41 @@ export const apiSlice = createApi({
         baseUrl: "https://translate.googleapis.com/"
     }),
     endpoints: (build) => ({
+         // ToDo: deprecate and remove endpoint
         translateGoogleNew: build.query<GoogleApiRespond, Query>({
             query: (query) => ({
                 url: `translate_a/single?client=gtx&sl=${query.sourceLang}&tl=${query.targetLang}&dt=t&dt=bd&dj=1&q=${query.sourceText}`,
                 method: "GET"
             })
         }),
-        translateGoogleTransformed: build.query<GoogleApiRespond, Query>({
+
+
+        // New endpoint  
+        translationResult: build.query<TranslationResult, Query>({
             query: (query) => ({
                 url: `translate_a/single?client=gtx&sl=${query.sourceLang}&tl=${query.targetLang}&dt=t&dt=bd&dj=1&q=${query.sourceText}`,
                 method: "GET"
-            }), //TODO: transformResponse
-/*             transformResponse: (response: GoogleApiRespond): TranslationResult => {
+            }),
+
+            transformResponse: (response: GoogleApiRespond): TranslationResult => {
                     return {
-                        dictionaryName,
-                        detectedLanguage: respond.src,
-                        original: respond.sentences[0].orig,
-                        mainTranslation: respond.sentences[0].trans,
-                        otherTranslations: respond.dict?.map(dict => ({
-                            pos: dict.pos,
-                            translations: dict.terms 
-                        })),
+                        dictionaryName: getDictionaryName(response),
+                        detectedLanguage: response.src,
+                        original: response.sentences[0].orig,
+                        mainTranslation: response.sentences[0].trans,
+                    
+                        otherTranslations: response.dict?.map(dict => 
+                            ({
+                                pos: dict.pos,
+                                translations: dict.terms 
+                            })
+                        ),
+
+                        learned: false,
                     }
-            } */
+            } 
         }),
     })
 });
 
-export const { useTranslateGoogleNewQuery, useLazyTranslateGoogleNewQuery } = apiSlice;
+export const { useTranslateGoogleNewQuery, useLazyTranslateGoogleNewQuery, useLazyTranslationResultQuery } = apiSlice;
