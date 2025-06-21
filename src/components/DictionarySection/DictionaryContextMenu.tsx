@@ -1,5 +1,5 @@
 import { setTranslateAutomatically } from "../../redux/features/settings/settingsSlice";
-import { updateInputText, updateOutputText } from "../../redux/features/translate/translateSlice";
+import { updateInputText, updateOutputText, updateTranslationResult } from "../../redux/features/translate/translateSlice";
 import { useAppDispatch } from "../../redux/store";
 import { TranslationResult } from "../../types";
 
@@ -17,10 +17,12 @@ export default function DictionaryContextMenu({className, x, y, translation}: Pr
 
 
     // Callbacks
-    const setInputAndOutput = () => {
+
+    const setInputAndOutput = () => { // set data for translation section with provided data
         dispatch(updateInputText(translation?.original ?? ""));
         dispatch(updateOutputText(translation?.mainTranslation ?? ""));
         dispatch(setTranslateAutomatically(false));
+        dispatch(updateTranslationResult(translation));
     };
 
     return (
