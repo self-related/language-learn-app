@@ -6,25 +6,29 @@ import MoreTranslations from "./MoreTranslations";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { handleGoogleApi } from "./utils";
 import { languagesG } from "../../consts";
-import { useAppSelector } from "../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { updateTranslationResult } from "../../redux/features/translate/translateSlice";
 
 
 export default function TranslateSection() {
 
+    
     // states
     const translateAutomatically = useAppSelector(state => state.settingsSlice.translateAutomatically);
 
-    // const [sourceText, setSourceText] = useState("");
+    // ToDo: use translationResult from redux translateSlice
     const [mainTranslation, setMainTranslation ] = useState<string>("");
+    
+    
+    // Redux
+    const dispatch = useAppDispatch();
 
-
-    // Redux global states
     const sourceLangRedux = useAppSelector(slice => slice.settingsSlice.sourceLang);
     const targetLangRedux = useAppSelector(slice => slice.settingsSlice.targetLang);
     const inputText = useAppSelector(state => state.translateSlice.inputText);
-
-
-
+    
+    
+    
     // local variables
     const [triggerQueryNew, {data, isFetching, isError}] = useLazyTranslateGoogleNewQuery(); // deprecate and remove
     const translationResult = handleGoogleApi(data, sourceLangRedux, targetLangRedux); // deprecate and remove
@@ -44,6 +48,11 @@ export default function TranslateSection() {
         setMainTranslation(translationResult?.mainTranslation ?? "")
     }, [translationResult?.mainTranslation]);
 
+
+    //! update global translationResult state (used for manual control)
+    useEffect(() => {
+        dispatch(updateTranslationResult(translationResult));
+    }, [translationResult, dispatch]);
 
 
     return (
@@ -69,7 +78,7 @@ export default function TranslateSection() {
             
             <Output translationResult={translationResult} original={inputText} mainTranslation={mainTranslation} onOutputChange={ (event) => setMainTranslation(event.currentTarget.value) } onOutputReset={ () => setMainTranslation(translationResult?.mainTranslation ?? "") } />
             
-            <MoreTranslations otherTranslations={translationResult?.otherTranslations} onWordClick={ (event) => setMainTranslation(event.currentTarget.innerHTML) } />
+            <MoreTranslations onWordClick={ (event) => setMainTranslation(event.currentTarget.innerHTML) } />
 
         </section>
 

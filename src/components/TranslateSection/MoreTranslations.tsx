@@ -1,13 +1,13 @@
-import { OtherTranslations } from "../../types";
+import { useAppSelector } from "../../redux/store";
 
 interface Props {
-    // ToDo: Move to redux
-    otherTranslations: OtherTranslations[] | undefined,
     onWordClick: (event: React.MouseEvent) => void
 }
 
-export default function MoreTranslations( {otherTranslations, onWordClick}: Props ) {
-    const translationsList = otherTranslations?.map((entry, index) => (
+export default function MoreTranslations( {onWordClick}: Props ) {
+    const translationResult = useAppSelector(state => state.translateSlice.translationResult); // ToDo: later change for current api query name
+
+    const translationsList = translationResult?.otherTranslations?.map((entry, index) => (
         <li key={index} className="flex flex-wrap items-center gap-x-1 gap-y-2 mb-3 w-full text-shadow-black-005rem">
                 
                 {/* type of word (Noun, verb, etc) */}
@@ -21,7 +21,6 @@ export default function MoreTranslations( {otherTranslations, onWordClick}: Prop
             }
         </li>
     ));
-
 
   return (
     <div id="more-translations">
