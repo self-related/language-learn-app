@@ -3,6 +3,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface TranslateSliceState {
     inputText: string,
     outputText: string,
+    // TODO: add translateAutomatically, moreTranslations[], sourceLanguage and targetLanguage (en, es, etc), currentApi: {name, languageList} 
+    // TODO:  use loadFromLocalStorage() to load saved values
 }
 
 const initialState: TranslateSliceState = {
