@@ -1,5 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { TranslationResult } from "../../../types";
+import { OtherTranslations, TranslationResult } from "../../../types";
+
+export interface DictionaryItem {
+    sourceLang: string,
+    targetLang: string,
+
+    original: string,
+    mainTranslation: string,
+    dictionaryName: string,
+    learned: boolean;
+    
+    otherTranslations?: OtherTranslations[],
+    detectedLanguage?: string,
+}
 
 export interface DictionaryMap {
     [name: string]: Array<TranslationResult>
