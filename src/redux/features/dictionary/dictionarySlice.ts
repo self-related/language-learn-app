@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { OtherTranslations, TranslationResult } from "../../../types";
+import { OtherTranslations, Translation, TranslationResult } from "../../../types";
 
 export interface DictionaryItem {
     sourceLang: string,
@@ -15,7 +15,7 @@ export interface DictionaryItem {
 }
 
 export interface DictionaryMap {
-    [name: string]: Array<TranslationResult>
+    [name: string]: Array<DictionaryItem>
 }
 
 const savedState = localStorage.getItem("dictionaries");
@@ -36,30 +36,24 @@ export const dictionarySlice = createSlice({
     initialState,
     name: "dictionarySlice",
     reducers: {
-        addTranslation: (state: DictionaryMap, action: PayloadAction<TranslationResult>) => {
-
-            if (!action.payload.mainTranslation) {
-                return;
-            }
-
+        addTranslation: (state: DictionaryMap, action: PayloadAction<Translation>) => {
             const dictionaryName = action.payload.dictionaryName;
 
             if (!state[dictionaryName]) {
                 state[dictionaryName] = [];
             }
 
-            console.log(action.payload.original);
             const existingTranslationIndex = state[dictionaryName].findIndex(item => item.original == action.payload.original);
 
-            const newTranslation: TranslationResult = {...action.payload, learned: false };
+            const newDictionaryItem: DictionaryItem = {...action.payload, learned: false};
 
             if (existingTranslationIndex >= 0) {
                 const replacing = window.confirm("This item already exists.\nReplace?");
                 if (replacing) {
-                    state[dictionaryName][existingTranslationIndex] = newTranslation;
+                    state[dictionaryName][existingTranslationIndex] = newDictionaryItem;
                 }
             } else {
-                state[dictionaryName].unshift(newTranslation);
+                state[dictionaryName].unshift(newDictionaryItem);
             }
 
             saveToLocalStorage(state);
