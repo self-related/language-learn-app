@@ -1,13 +1,26 @@
 import { GoogleApiRespond } from "../../redux/features/api/types";
-import { TranslationResult } from "../../types"; 
+import { Languages, TranslationResult } from "../../types"; 
 import { languagesG } from "../../consts";
+
+
+export function generateDictionaryName (sourceLang: string, targetLang: string, langMap: Languages, detectedLang?: string) {
+    const sourceLangName = langMap[sourceLang];
+    const targetLangName = langMap[targetLang];
+    
+    const detectedLangName = detectedLang
+    ? langMap[detectedLang] ?? detectedLang
+    : "unknown";
+
+    return sourceLang == "auto"
+    ? `${detectedLangName} - ${targetLangName}`
+    : `${sourceLangName} - ${targetLangName}`;
+};
 
 export const handleGoogleApi = (respond: GoogleApiRespond | undefined, sourceLang: string, targetLang: string): TranslationResult | undefined => {
     if (!respond) 
         return undefined;
-    const dictionaryName = sourceLang == "auto"
-    ? `${languagesG[respond.src] ?? respond.src} - ${languagesG[targetLang]}`
-    : `${languagesG[sourceLang]} - ${languagesG[targetLang]}`;
+
+    const dictionaryName = generateDictionaryName(sourceLang, targetLang, languagesG, respond.src);
     
     return {
         dictionaryName,
