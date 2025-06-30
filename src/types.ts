@@ -20,6 +20,18 @@ export interface TranslationResult { // TODO: remove: dictionaryName, learned. A
     detectedLanguage?: string,
 }
 
+export interface Translation {
+    sourceLang: string,
+    targetLang: string,
+
+    original: string,
+    mainTranslation: string,
+    dictionaryName: string,
+
+    otherTranslations?: OtherTranslations[],
+    detectedLanguage?: string,    
+}
+
 // TODO:
 // add DictionaryItem type { dictionaryName, learned, original, mainTranslation, otherTranslations, detectedLanguage,  }
 
