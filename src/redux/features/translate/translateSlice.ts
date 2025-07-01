@@ -3,9 +3,6 @@ import { Languages, OtherTranslations } from "../../../types";
 import { languagesG } from "../../../consts";
 
 interface TranslateSliceState {
-    inputText: string,
-    outputText: string,
-
     sourceLang: string,
     targetLang: string,
 
@@ -23,9 +20,6 @@ interface TranslateSliceState {
 
 // TODO:  use loadFromLocalStorage() to load saved values
 const initialState: TranslateSliceState = {
-    inputText: "",
-    outputText: "",
-
     sourceLang: "en",
     targetLang: "es",
 
@@ -43,12 +37,6 @@ export const translateSlice = createSlice({
     name: "translateSlice",
     initialState,
     reducers: {
-        updateInputText: (state: TranslateSliceState, action: PayloadAction<string>) => { 
-            state.inputText = action.payload;
-        },
-        updateOutputText: (state: TranslateSliceState, action: PayloadAction<string>) => {
-            state.outputText = action.payload;
-        },
         swapInputOutputText: (state: TranslateSliceState) => {
             [state.original, state.mainTranslation] = [state.mainTranslation, state.original];
         },
@@ -71,8 +59,6 @@ export const translateSlice = createSlice({
 
 export const {
     swapInputOutputText, 
-    updateInputText, 
-    updateOutputText, 
     setOriginal, 
     setMainTranslation, 
     setSourceLang, 
