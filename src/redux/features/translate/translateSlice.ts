@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Languages, OtherTranslations } from "../../../types";
-import { languagesG } from "../../../consts";
+import { OtherTranslations } from "../../../types";
+import { loadStateFromLocalStorage, saveToLocalStorage } from "../../utils";
 
 interface TranslateSliceState {
     sourceLang: string,
@@ -15,11 +15,15 @@ interface TranslateSliceState {
     
     translateAutomatically: boolean,
 
-    currentApi?: {id: string, languageMap: Languages},
+    currentApi?: string,
 }
 
-// TODO:  use loadFromLocalStorage() to load saved values
-const initialState: TranslateSliceState = {
+const localStorageKey = "translateSettings";
+const savedState = loadStateFromLocalStorage<TranslateSliceState>(localStorageKey);
+
+const initialState: TranslateSliceState = savedState
+    ? savedState
+    : {
     sourceLang: "en",
     targetLang: "es",
 
@@ -30,7 +34,7 @@ const initialState: TranslateSliceState = {
 
     translateAutomatically: true,
     
-    currentApi: { id: "google", languageMap: languagesG }
+    currentApi: "google"
 };
 
 export const translateSlice = createSlice({
@@ -42,17 +46,19 @@ export const translateSlice = createSlice({
         },
         setOriginal: (state: TranslateSliceState, action: PayloadAction<string>) => { 
             state.original = action.payload;
+            saveToLocalStorage(localStorageKey, state);
         },
         setMainTranslation: (state: TranslateSliceState, action: PayloadAction<string>) => { 
             state.mainTranslation = action.payload;
+            saveToLocalStorage(localStorageKey, state);
         },
         setSourceLang: (state: TranslateSliceState, action: PayloadAction<string>) => {
             state.sourceLang = action.payload;
-            // saveSettings(state);
+            saveToLocalStorage(localStorageKey, state);
         },
         setTargetLang: (state: TranslateSliceState, action: PayloadAction<string>) => {
             state.targetLang = action.payload;
-            // saveSettings(state);
+            saveToLocalStorage(localStorageKey, state);
         },
     }
 });

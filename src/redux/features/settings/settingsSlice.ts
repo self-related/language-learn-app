@@ -2,9 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { SortBy } from "../../../types";
 
 interface Settings {
-    currentApi: string,
-    sourceLang: string,
-    targetLang: string,
     selectedDictionaryName: string,
     translateAutomatically: boolean,
     hideTranslations: boolean,
@@ -18,11 +15,9 @@ function saveSettings(state: Settings) {
 
 const savedSettings = localStorage.getItem("settings");
 
-const initialState: Settings = (savedSettings != null) ? JSON.parse(savedSettings) 
+const initialState: Settings = (savedSettings != null) 
+    ? JSON.parse(savedSettings) 
     : {
-    currentApi: "google",
-    sourceLang: "auto",
-    targetLang: "es",
     selectedDictionaryName: "",
     translateAutomatically: true,
     hideTranslations: false,
