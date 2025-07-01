@@ -1,41 +1,34 @@
 import { TranslationResult } from "../../types";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { updateOutputText } from "../../redux/features/translate/translateSlice";
-import { useCallback, useEffect } from "react";
+import { setMainTranslation } from "../../redux/features/translate/translateSlice";
+import { useCallback } from "react";
 
 interface OutputProps {
-    original: string, // fetched OR manually changed translation
-    mainTranslation: string, // don't remove - TranslationResult's origin text isn't manually changed
     onOutputChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void,
     onOutputReset: () => void,
     translationResult?: TranslationResult,
 }
 
-export default function Output({ translationResult, mainTranslation, onOutputReset}: OutputProps) {
+export default function Output({ translationResult, onOutputReset}: OutputProps) {
     const dispatch = useAppDispatch();
 
     // Redux states
-    const inputText = useAppSelector(state => state.translateSlice.inputText);
-    const outputText = useAppSelector(state => state.translateSlice.outputText);
+    const original = useAppSelector(state => state.translateSlice.original);
+    const mainTranslation = useAppSelector(state => state.translateSlice.mainTranslation);
 
-    const changeOutput = useCallback((value: string) => {
-        dispatch(updateOutputText(value))
+    const handleChangeOutput = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        dispatch(setMainTranslation(e.currentTarget.value));
     }, [dispatch]);
-
-    useEffect(() => {
-        changeOutput(mainTranslation);
-    }, [mainTranslation, changeOutput]);
 
 
     const handleAddTranslationClick = () => {
-        const original = inputText.trim();
-        const mainTranslation = outputText;
-        dispatch({ type: "dictionarySlice/addTranslation", payload: {...translationResult, original, mainTranslation}} );
+        const originalTrimmed = original.trim();
+        dispatch({ type: "dictionarySlice/addTranslation", payload: {...translationResult, original: originalTrimmed, mainTranslation}} );
     }
 
     return (
         <div id="output-div" className="mt-4">
-            <textarea id="output" value={outputText} onChange={(e) => changeOutput(e.currentTarget.value)}
+            <textarea id="output" value={mainTranslation} onChange={handleChangeOutput}
                     className='block w-full min-h-22 bg-[#505050] hover:bg-[#606060] accent-orange-400 mt-4 mb-2 px-2 py-1 resize-none rounded-sm text-shadow-black-005rem'
                     />
 

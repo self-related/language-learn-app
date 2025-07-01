@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useLazyTranslateGoogleNewQuery } from "../../redux/features/api/apiSlice";
 import UserInput from "./UserInput";
 import Output from "./Output";
@@ -6,7 +6,8 @@ import MoreTranslations from "./MoreTranslations";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { handleGoogleApi } from "./utils";
 import { languagesG } from "../../consts";
-import { useAppSelector } from "../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { setMainTranslation } from "../../redux/features/translate/translateSlice";
 
 
 export default function TranslateSection() {
@@ -14,27 +15,22 @@ export default function TranslateSection() {
     // states
     const translateAutomatically = useAppSelector(state => state.settingsSlice.translateAutomatically);
 
-    // const [sourceText, setSourceText] = useState("");
-    const [mainTranslation, setMainTranslation ] = useState<string>("");
-
 
     // Redux global states
-    const sourceLangRedux = useAppSelector(slice => slice.settingsSlice.sourceLang);
-    const targetLangRedux = useAppSelector(slice => slice.settingsSlice.targetLang);
-    const inputText = useAppSelector(state => state.translateSlice.inputText);
+    const sourceLangRedux = useAppSelector(slice => slice.translateSlice.sourceLang);
+    const targetLangRedux = useAppSelector(slice => slice.translateSlice.targetLang);
+    const inputText = useAppSelector(state => state.translateSlice.original);
 
+    const dispatch = useAppDispatch();
 
 
     // local variables
-    const [triggerQueryNew, {data, isFetching, isError}] = useLazyTranslateGoogleNewQuery();
+    const [triggerQueryNew, { data, isFetching, isError }] = useLazyTranslateGoogleNewQuery();
     const translationResult = handleGoogleApi(data, sourceLangRedux, targetLangRedux);
-
-    // callbacks
 
 
 
     // effects
-
 
     // auto-translation effect
     useEffect(() => {
@@ -45,8 +41,8 @@ export default function TranslateSection() {
 
     // change main translation state on query response
     useEffect(() => {
-        setMainTranslation(translationResult?.mainTranslation ?? "")
-    }, [translationResult?.mainTranslation]);
+        dispatch(setMainTranslation(translationResult?.mainTranslation ?? ""));
+    }, [translationResult?.mainTranslation, dispatch]);
 
 
 
@@ -71,7 +67,7 @@ export default function TranslateSection() {
                 )
             }
             
-            <Output translationResult={translationResult} original={inputText} mainTranslation={mainTranslation} onOutputChange={ (event) => setMainTranslation(event.currentTarget.value) } onOutputReset={ () => setMainTranslation(translationResult?.mainTranslation ?? "") } />
+            <Output translationResult={translationResult} onOutputChange={ (event) => setMainTranslation(event.currentTarget.value) } onOutputReset={ () => setMainTranslation(translationResult?.mainTranslation ?? "") } />
             
             <MoreTranslations otherTranslations={translationResult?.otherTranslations} onWordClick={ (event) => setMainTranslation(event.currentTarget.innerHTML) } />
 

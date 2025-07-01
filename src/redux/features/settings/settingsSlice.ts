@@ -34,14 +34,6 @@ export const settingsSlice = createSlice({
     initialState,
     reducers: {
         setCurrentApi: () => {}, // ToDo
-        setSourceLang: (state: Settings, action: PayloadAction<string>) => {
-            state.sourceLang = action.payload;
-            saveSettings(state);
-        },
-        setTargetLang: (state: Settings, action: PayloadAction<string>) => {
-            state.targetLang = action.payload;
-            saveSettings(state);
-        },
         setSelectedDictionaryName: (state: Settings, action: PayloadAction<string>) => { 
             state.selectedDictionaryName = action.payload;
             saveSettings(state);
@@ -63,8 +55,6 @@ export const settingsSlice = createSlice({
 
 
 export const { 
-    setSourceLang, 
-    setTargetLang, 
     setSelectedDictionaryName, 
     setTranslateAutomatically, 
     switchHideTranslations, 

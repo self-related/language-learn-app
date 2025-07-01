@@ -1,5 +1,5 @@
 import { setTranslateAutomatically } from "../../redux/features/settings/settingsSlice";
-import { updateInputText } from "../../redux/features/translate/translateSlice";
+import { setOriginal } from "../../redux/features/translate/translateSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 
 interface UserInputProps {
@@ -11,15 +11,18 @@ export default function UserInput({ onButtonClick }: UserInputProps) {
     // Redux
     const dispatch = useAppDispatch();
 
-    const userInputText = useAppSelector(state => state.translateSlice.inputText);
+    const userInputText = useAppSelector(state => state.translateSlice.original);
     const translateAutomatically = useAppSelector(state => state.settingsSlice.translateAutomatically);
 
     // callbacks
-    const changeInput = (value: string) => dispatch(updateInputText(value));
+    const changeInput = (value: string) => dispatch(setOriginal(value));
 
     return (
         <div id="input-div" >
-            <textarea id="user-input" placeholder='type a word or a phrase' value={userInputText} onChange={(e) => changeInput(e.currentTarget.value)} 
+            <textarea id="user-input" 
+                placeholder='type a word or a phrase' 
+                value={userInputText} 
+                onChange={(e) => changeInput(e.currentTarget.value)} 
                 className='block w-full min-h-22 bg-[#505050] hover:bg-[#606060] accent-orange-400 mt-4 mb-2 px-2 py-1 resize-none rounded-sm text-shadow-black-005rem'
             />
             <label htmlFor="auto-translate" className="block ml-auto mr-2 w-fit">

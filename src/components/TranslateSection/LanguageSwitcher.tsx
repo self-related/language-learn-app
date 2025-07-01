@@ -1,4 +1,4 @@
-import { setSourceLang, setTargetLang } from "../../redux/features/settings/settingsSlice";
+import { setSourceLang, setTargetLang } from "../../redux/features/translate/translateSlice";
 import { swapInputOutputText } from "../../redux/features/translate/translateSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { Languages } from "../../types";
@@ -17,8 +17,8 @@ export default function LanguageSwitcher(props: LanguageSwitcherProps) {
     const dispatch = useAppDispatch();
 
     // Redux global states
-    const sourceLangRedux = useAppSelector(slice => slice.settingsSlice.sourceLang);
-    const targetLangRedux = useAppSelector(slice => slice.settingsSlice.targetLang);
+    const sourceLangRedux = useAppSelector(slice => slice.translateSlice.sourceLang);
+    const targetLangRedux = useAppSelector(slice => slice.translateSlice.targetLang);
 
 
     // callbacks
