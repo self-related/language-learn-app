@@ -1,4 +1,4 @@
-import { setTranslateAutomatically } from "../../redux/features/settings/settingsSlice";
+import { setTranslateAutomatically } from "../../redux/features/translate/translateSlice";
 import { setOriginal } from "../../redux/features/translate/translateSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 
@@ -12,7 +12,7 @@ export default function UserInput({ onButtonClick }: UserInputProps) {
     const dispatch = useAppDispatch();
 
     const userInputText = useAppSelector(state => state.translateSlice.original);
-    const translateAutomatically = useAppSelector(state => state.settingsSlice.translateAutomatically);
+    const translateAutomatically = useAppSelector(state => state.translateSlice.translateAutomatically);
 
     // callbacks
     const changeInput = (value: string) => dispatch(setOriginal(value));

@@ -60,6 +60,10 @@ export const translateSlice = createSlice({
             state.targetLang = action.payload;
             saveToLocalStorage(localStorageKey, state);
         },
+        setTranslateAutomatically: (state: TranslateSliceState, action: PayloadAction<boolean>) => {
+            state.translateAutomatically = action.payload;
+            saveToLocalStorage(localStorageKey, state);
+        },
     }
 });
 
@@ -68,5 +72,6 @@ export const {
     setOriginal, 
     setMainTranslation, 
     setSourceLang, 
-    setTargetLang
+    setTargetLang,
+    setTranslateAutomatically
 } = translateSlice.actions;

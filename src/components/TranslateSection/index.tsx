@@ -13,7 +13,7 @@ import { setMainTranslation } from "../../redux/features/translate/translateSlic
 export default function TranslateSection() {
 
     // states
-    const translateAutomatically = useAppSelector(state => state.settingsSlice.translateAutomatically);
+    const translateAutomatically = useAppSelector(state => state.translateSlice.translateAutomatically);
 
 
     // Redux global states

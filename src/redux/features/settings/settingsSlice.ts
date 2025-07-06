@@ -3,7 +3,6 @@ import { SortBy } from "../../../types";
 
 interface Settings {
     selectedDictionaryName: string,
-    translateAutomatically: boolean,
     hideTranslations: boolean,
     sortBy: SortBy | null,
     // ToDo: sortBy
@@ -33,10 +32,6 @@ export const settingsSlice = createSlice({
             state.selectedDictionaryName = action.payload;
             saveSettings(state);
         },
-        setTranslateAutomatically: (state: Settings, action: PayloadAction<boolean>) => { 
-            state.translateAutomatically = action.payload;
-            saveSettings(state);
-        },
         setSortBy: (state: Settings, action: PayloadAction<SortBy | null>) => {
             state.sortBy = action.payload;
             saveSettings(state);
@@ -51,7 +46,6 @@ export const settingsSlice = createSlice({
 
 export const { 
     setSelectedDictionaryName, 
-    setTranslateAutomatically, 
     switchHideTranslations, 
     setSortBy,
 
