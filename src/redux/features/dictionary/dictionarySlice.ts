@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { OtherTranslations, Translation, TranslationResult } from "../../../types";
+import { OtherTranslations, SortBy, Translation, TranslationResult } from "../../../types";
 
 export interface DictionaryItem {
     sourceLang: string,
@@ -18,8 +18,16 @@ export interface DictionaryMap {
     [name: string]: Array<DictionaryItem>
 }
 
+interface DictionarySliceState {
+    dictionaryMap: DictionaryMap,
+
+    selectedDictionaryName?: string,
+    hideTranslations?: boolean,
+    sortBy?: SortBy | null,
+}
+
 const savedState = localStorage.getItem("dictionaries");
-const initialState: DictionaryMap = savedState ? JSON.parse(savedState) : {};
+const initialState: DictionaryMap = savedState ? JSON.parse(savedState) : {}; // TODO: create a DictionarySliceState containing Dictionary map and other settings
 
 function saveToLocalStorage(state: DictionaryMap) {
     // clear storage if state is empty
