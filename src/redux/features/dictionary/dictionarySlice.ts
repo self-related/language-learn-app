@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { OtherTranslations, SortBy, Translation, TranslationResult } from "../../../types";
+import { loadStateFromLocalStorage, saveToLocalStorage } from "../../utils";
 
 export interface DictionaryItem {
     sourceLang: string,
@@ -26,10 +27,12 @@ interface DictionarySliceState {
     hideTranslations: boolean,
 }
 
-const savedState = localStorage.getItem("dictionarySettings");
+const localStorageKey = "dictionarySettings";
+
+const savedState = loadStateFromLocalStorage<DictionarySliceState>(localStorageKey);
 
 const initialState: DictionarySliceState = savedState 
-? JSON.parse(savedState) 
+? savedState
 : {
     dictionaryMap: {},
 
@@ -62,7 +65,7 @@ export const dictionarySlice = createSlice({
                 state.dictionaryMap[dictionaryName].unshift(newDictionaryItem);
             }
 
-            // saveToLocalStorage(state);
+            saveToLocalStorage<DictionarySliceState>(localStorageKey, state);
         },
         deleteTranslation: (state: DictionarySliceState, action) => {
             state.dictionaryMap[action.payload.dictionary] = state.dictionaryMap[action.payload.dictionary].filter(translation => translation.original != action.payload.original);
@@ -71,30 +74,33 @@ export const dictionarySlice = createSlice({
                 delete state.dictionaryMap[action.payload.dictionary];
             }
 
-            // saveToLocalStorage(state);
+            saveToLocalStorage<DictionarySliceState>(localStorageKey, state);
         },
         markLearned: (state: DictionarySliceState, action: PayloadAction<TranslationResult>) => {
             const dictionaryName = action.payload.dictionaryName;
             const translation = state.dictionaryMap[dictionaryName].find(tr => tr.original === action.payload.original);
             if (translation) translation.learned = !translation.learned;
 
-            // saveToLocalStorage(state);
+            saveToLocalStorage<DictionarySliceState>(localStorageKey, state);
         },
 
         
         setSelectedDictionaryName: (state: DictionarySliceState, action: PayloadAction<string>) => { 
             state.selectedDictionaryName = action.payload;
-            // saveSettings(state);
+
+            saveToLocalStorage<DictionarySliceState>(localStorageKey, state);
         },
 
         setSortBy: (state: DictionarySliceState, action: PayloadAction<SortBy | null>) => {
             state.sortBy = action.payload;
-            // saveSettings(state);
+
+            saveToLocalStorage<DictionarySliceState>(localStorageKey, state);
         },
 
         switchHideTranslations: (state: DictionarySliceState) => {
             state.hideTranslations = !state.hideTranslations;
-            // saveSettings(state);
+
+            saveToLocalStorage<DictionarySliceState>(localStorageKey, state);
         },
 
     }
