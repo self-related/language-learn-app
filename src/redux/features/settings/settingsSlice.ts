@@ -20,7 +20,7 @@ const initialState: Settings = (savedSettings != null)
     // selectedDictionaryName: "",
     translateAutomatically: true,
     hideTranslations: false,
-    sortBy: null,
+    // sortBy: null,
 };
 
 export const settingsSlice = createSlice({
@@ -32,10 +32,10 @@ export const settingsSlice = createSlice({
             state.selectedDictionaryName = action.payload;
             saveSettings(state);
         }, */
-        setSortBy: (state: Settings, action: PayloadAction<SortBy | null>) => {
+/*         setSortBy: (state: Settings, action: PayloadAction<SortBy | null>) => {
             state.sortBy = action.payload;
             saveSettings(state);
-        },
+        }, */
         switchHideTranslations: (state: Settings) => {
             state.hideTranslations = !state.hideTranslations;
             saveSettings(state);
@@ -47,6 +47,6 @@ export const settingsSlice = createSlice({
 export const { 
     // setSelectedDictionaryName, 
     switchHideTranslations, 
-    setSortBy,
+    // setSortBy,
 
 } = settingsSlice.actions;

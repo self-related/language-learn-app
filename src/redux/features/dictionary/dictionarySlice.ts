@@ -22,8 +22,8 @@ interface DictionarySliceState {
     dictionaryMap: DictionaryMap,
 
     selectedDictionaryName: string,
+    sortBy: SortBy | null,
     hideTranslations?: boolean,
-    sortBy?: SortBy | null,
 }
 
 const savedState = localStorage.getItem("dictionarySettings");
@@ -87,6 +87,11 @@ export const dictionarySlice = createSlice({
             // saveSettings(state);
         },
 
+        setSortBy: (state: DictionarySliceState, action: PayloadAction<SortBy | null>) => {
+            state.sortBy = action.payload;
+            // saveSettings(state);
+        },
+
     }
 });
 
@@ -94,4 +99,5 @@ export const {reducerPath, reducer} = dictionarySlice;
 export const { 
     markLearned,
     setSelectedDictionaryName,
+    setSortBy
 } = dictionarySlice.actions;
