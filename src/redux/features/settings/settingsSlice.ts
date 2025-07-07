@@ -17,7 +17,7 @@ const savedSettings = localStorage.getItem("settings");
 const initialState: Settings = (savedSettings != null) 
     ? JSON.parse(savedSettings) 
     : {
-    selectedDictionaryName: "",
+    // selectedDictionaryName: "",
     translateAutomatically: true,
     hideTranslations: false,
     sortBy: null,
@@ -28,10 +28,10 @@ export const settingsSlice = createSlice({
     initialState,
     reducers: {
         setCurrentApi: () => {}, // ToDo
-        setSelectedDictionaryName: (state: Settings, action: PayloadAction<string>) => { 
+/*         setSelectedDictionaryName: (state: Settings, action: PayloadAction<string>) => { 
             state.selectedDictionaryName = action.payload;
             saveSettings(state);
-        },
+        }, */
         setSortBy: (state: Settings, action: PayloadAction<SortBy | null>) => {
             state.sortBy = action.payload;
             saveSettings(state);
@@ -45,7 +45,7 @@ export const settingsSlice = createSlice({
 
 
 export const { 
-    setSelectedDictionaryName, 
+    // setSelectedDictionaryName, 
     switchHideTranslations, 
     setSortBy,
 

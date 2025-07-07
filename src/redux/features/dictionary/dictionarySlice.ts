@@ -21,7 +21,7 @@ export interface DictionaryMap {
 interface DictionarySliceState {
     dictionaryMap: DictionaryMap,
 
-    selectedDictionaryName?: string,
+    selectedDictionaryName: string,
     hideTranslations?: boolean,
     sortBy?: SortBy | null,
 }
@@ -80,8 +80,18 @@ export const dictionarySlice = createSlice({
 
             // saveToLocalStorage(state);
         },
+
+        
+        setSelectedDictionaryName: (state: DictionarySliceState, action: PayloadAction<string>) => { 
+            state.selectedDictionaryName = action.payload;
+            // saveSettings(state);
+        },
+
     }
 });
 
 export const {reducerPath, reducer} = dictionarySlice;
-export const { markLearned } = dictionarySlice.actions;
+export const { 
+    markLearned,
+    setSelectedDictionaryName,
+} = dictionarySlice.actions;

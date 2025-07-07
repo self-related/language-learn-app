@@ -3,7 +3,8 @@ import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { ContextMenuData, SortBy, TranslationResult } from "../../types";
 import Category from "./Category";
 import { sortByName } from "./utils";
-import { setSelectedDictionaryName, setSortBy, switchHideTranslations } from "../../redux/features/settings/settingsSlice";
+import { setSortBy, switchHideTranslations } from "../../redux/features/settings/settingsSlice";
+import { setSelectedDictionaryName } from "../../redux/features/dictionary/dictionarySlice";
 
 /*  ToDo: 
     - move currentDictonary state to redux
@@ -25,7 +26,7 @@ export default function DictionarySection({ setContextMenu }: Props) {
     const dispatch = useAppDispatch();
 
     const dictionaries = useAppSelector(state => state.dictionarySlice).dictionaryMap;
-    const currentDictionaryNameRedux = useAppSelector(state => state.settingsSlice.selectedDictionaryName);
+    const currentDictionaryName = useAppSelector(state => state.dictionarySlice.selectedDictionaryName);
     const sortBy = useAppSelector(state => state.settingsSlice.sortBy);
     const hideTranslations = useAppSelector(state => state.settingsSlice.hideTranslations); 
 
@@ -45,21 +46,21 @@ export default function DictionarySection({ setContextMenu }: Props) {
         const dictionariesNotEmpty = dictionaryAllNames.length > 0;
 
         // if no dictionary selected, set the first available dictionary 
-        if (dictionariesNotEmpty && currentDictionaryNameRedux == "") {
+        if (dictionariesNotEmpty && currentDictionaryName == "") {
             dispatch(setSelectedDictionaryName(dictionaryAllNames[0]));
         }
 
         // if selected dictionary is empty, select empty string
-        if (currentDictionaryNameRedux && !dictionaries[currentDictionaryNameRedux]) {
+        if (currentDictionaryName && !dictionaries[currentDictionaryName]) {
             dispatch(setSelectedDictionaryName(""));
         }
-    }, [dictionaries, currentDictionaryNameRedux, dispatch]);
+    }, [dictionaries, currentDictionaryName, dispatch]);
     
 
 
     /** Pre-render transformations */
 
-    let currentDictionary: TranslationResult[] | undefined = dictionaries[currentDictionaryNameRedux];
+    let currentDictionary: TranslationResult[] | undefined = dictionaries[currentDictionaryName];
 
     // ToDo: move sorting to utils
     switch (sortBy) {
@@ -76,7 +77,7 @@ export default function DictionarySection({ setContextMenu }: Props) {
 
              {/* dictionary selection panel */}
             <div className="flex justify-between items-center mr-2">
-                <select name="current-dictionary" id="current-dictionary" value={currentDictionaryNameRedux ?? ""} onChange={handleDictionaryChange} style={{textShadow: "black 0.08rem 0.08rem 0.05rem"}}
+                <select name="current-dictionary" id="current-dictionary" value={currentDictionaryName ?? ""} onChange={handleDictionaryChange} style={{textShadow: "black 0.08rem 0.08rem 0.05rem"}}
                         className="cursor-pointer bg-[#505050] hover:bg-[#606060] p-2 rounded-sm">
                     {
                         Object.keys(dictionaries).length > 0 
@@ -110,8 +111,8 @@ export default function DictionarySection({ setContextMenu }: Props) {
                 
                 {/* ToDo: Make categories wrappers */}
                 
-                <Category name="Not Learned" words={notLearnedWords} dictionaryName={currentDictionaryNameRedux} setContextMenu={setContextMenu} />
-                <Category name="Learned" words={learnedWords} dictionaryName={currentDictionaryNameRedux} setContextMenu={setContextMenu}/>
+                <Category name="Not Learned" words={notLearnedWords} dictionaryName={currentDictionaryName} setContextMenu={setContextMenu} />
+                <Category name="Learned" words={learnedWords} dictionaryName={currentDictionaryName} setContextMenu={setContextMenu}/>
             </div>
         </section>
     );
