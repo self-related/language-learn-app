@@ -24,7 +24,7 @@ export default function DictionarySection({ setContextMenu }: Props) {
     /** Redux State */
     const dispatch = useAppDispatch();
 
-    const dictionaries = useAppSelector(state => state.dictionarySlice);
+    const dictionaries = useAppSelector(state => state.dictionarySlice).dictionaryMap;
     const currentDictionaryNameRedux = useAppSelector(state => state.settingsSlice.selectedDictionaryName);
     const sortBy = useAppSelector(state => state.settingsSlice.sortBy);
     const hideTranslations = useAppSelector(state => state.settingsSlice.hideTranslations); 

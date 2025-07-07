@@ -26,61 +26,59 @@ interface DictionarySliceState {
     sortBy?: SortBy | null,
 }
 
-const savedState = localStorage.getItem("dictionaries");
-const initialState: DictionaryMap = savedState ? JSON.parse(savedState) : {}; // TODO: create a DictionarySliceState containing Dictionary map and other settings
+const savedState = localStorage.getItem("dictionarySettings");
 
-function saveToLocalStorage(state: DictionaryMap) {
-    // clear storage if state is empty
-    if (Object.keys(state).length === 0) {
-        localStorage.clear();
-        return;
-    }
+const initialState: DictionarySliceState = savedState 
+? JSON.parse(savedState) 
+: {
+    dictionaryMap: {},
 
-    // save
-    localStorage.setItem("dictionaries", JSON.stringify(state));
-}
+    selectedDictionaryName: "",
+    hideTranslations: false,
+    sortBy: null,
+};
 
 export const dictionarySlice = createSlice({
     initialState,
     name: "dictionarySlice",
     reducers: {
-        addTranslation: (state: DictionaryMap, action: PayloadAction<Translation>) => {
+        addTranslation: (state: DictionarySliceState, action: PayloadAction<Translation>) => {
             const dictionaryName = action.payload.dictionaryName;
 
-            if (!state[dictionaryName]) {
-                state[dictionaryName] = [];
+            if (!state.dictionaryMap[dictionaryName]) {
+                state.dictionaryMap[dictionaryName] = [];
             }
 
-            const existingTranslationIndex = state[dictionaryName].findIndex(item => item.original == action.payload.original);
+            const existingTranslationIndex = state.dictionaryMap[dictionaryName].findIndex(item => item.original == action.payload.original);
 
             const newDictionaryItem: DictionaryItem = {...action.payload, learned: false};
 
             if (existingTranslationIndex >= 0) {
                 const replacing = window.confirm("This item already exists.\nReplace?");
                 if (replacing) {
-                    state[dictionaryName][existingTranslationIndex] = newDictionaryItem;
+                    state.dictionaryMap[dictionaryName][existingTranslationIndex] = newDictionaryItem;
                 }
             } else {
-                state[dictionaryName].unshift(newDictionaryItem);
+                state.dictionaryMap[dictionaryName].unshift(newDictionaryItem);
             }
 
-            saveToLocalStorage(state);
+            // saveToLocalStorage(state);
         },
-        deleteTranslation: (state: DictionaryMap, action) => {
-            state[action.payload.dictionary] = state[action.payload.dictionary].filter(translation => translation.original != action.payload.original);
+        deleteTranslation: (state: DictionarySliceState, action) => {
+            state.dictionaryMap[action.payload.dictionary] = state.dictionaryMap[action.payload.dictionary].filter(translation => translation.original != action.payload.original);
 
-            if (Object.keys(state[action.payload.dictionary]).length == 0) {
-                delete state[action.payload.dictionary];
+            if (Object.keys(state.dictionaryMap[action.payload.dictionary]).length == 0) {
+                delete state.dictionaryMap[action.payload.dictionary];
             }
 
-            saveToLocalStorage(state);
+            // saveToLocalStorage(state);
         },
-        markLearned: (state: DictionaryMap, action: PayloadAction<TranslationResult>) => {
+        markLearned: (state: DictionarySliceState, action: PayloadAction<TranslationResult>) => {
             const dictionaryName = action.payload.dictionaryName;
-            const translation = state[dictionaryName].find(tr => tr.original === action.payload.original);
+            const translation = state.dictionaryMap[dictionaryName].find(tr => tr.original === action.payload.original);
             if (translation) translation.learned = !translation.learned;
 
-            saveToLocalStorage(state);
+            // saveToLocalStorage(state);
         },
     }
 });
