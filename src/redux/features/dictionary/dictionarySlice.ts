@@ -23,7 +23,7 @@ interface DictionarySliceState {
 
     selectedDictionaryName: string,
     sortBy: SortBy | null,
-    hideTranslations?: boolean,
+    hideTranslations: boolean,
 }
 
 const savedState = localStorage.getItem("dictionarySettings");
@@ -92,6 +92,11 @@ export const dictionarySlice = createSlice({
             // saveSettings(state);
         },
 
+        switchHideTranslations: (state: DictionarySliceState) => {
+            state.hideTranslations = !state.hideTranslations;
+            // saveSettings(state);
+        },
+
     }
 });
 
@@ -99,5 +104,6 @@ export const {reducerPath, reducer} = dictionarySlice;
 export const { 
     markLearned,
     setSelectedDictionaryName,
-    setSortBy
+    setSortBy,
+    switchHideTranslations
 } = dictionarySlice.actions;

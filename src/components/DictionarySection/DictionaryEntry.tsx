@@ -15,7 +15,7 @@ export default function DictionaryEntry({ translation, dictionary, setContextMen
     
     
     // Redux global states 
-    const hideTranslationsSetting = useAppSelector(state => state.settingsSlice.hideTranslations);
+    const hideTranslationsSetting = useAppSelector(state => state.dictionarySlice.hideTranslations);
     const allDictionaries = useAppSelector(state => state.dictionarySlice);
 
     // Local states

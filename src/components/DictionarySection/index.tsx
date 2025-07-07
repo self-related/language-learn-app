@@ -3,8 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { ContextMenuData, SortBy, TranslationResult } from "../../types";
 import Category from "./Category";
 import { sortByName } from "./utils";
-import { switchHideTranslations } from "../../redux/features/settings/settingsSlice";
-import { setSelectedDictionaryName, setSortBy } from "../../redux/features/dictionary/dictionarySlice";
+import { setSelectedDictionaryName, setSortBy, switchHideTranslations } from "../../redux/features/dictionary/dictionarySlice";
 
 /*  ToDo: 
     - move currentDictonary state to redux
@@ -28,7 +27,7 @@ export default function DictionarySection({ setContextMenu }: Props) {
     const dictionaries = useAppSelector(state => state.dictionarySlice).dictionaryMap;
     const currentDictionaryName = useAppSelector(state => state.dictionarySlice.selectedDictionaryName);
     const sortBy = useAppSelector(state => state.dictionarySlice.sortBy);
-    const hideTranslations = useAppSelector(state => state.settingsSlice.hideTranslations); 
+    const hideTranslations = useAppSelector(state => state.dictionarySlice.hideTranslations); 
 
 
     /** Callbacks */
