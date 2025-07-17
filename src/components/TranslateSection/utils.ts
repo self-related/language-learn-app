@@ -31,5 +31,6 @@ export const handleGoogleApi = (respond: GoogleApiRespond | undefined, sourceLan
             pos: dict.pos,
             translations: dict.terms 
         })),
+        learned: false
     }
 };
