@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ContextMenuData, TranslationResult } from "../../types";
+import { ContextMenuData, TranslationResult } from "@/src/types";
 import DictionaryEntry from "./DictionaryEntry";
 
 interface CategoryProps {

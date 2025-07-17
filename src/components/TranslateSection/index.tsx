@@ -1,13 +1,13 @@
 import { useEffect } from "react";
-import { useLazyTranslateGoogleNewQuery } from "../../redux/features/api/apiSlice";
+import { useLazyTranslateGoogleNewQuery } from "@/src/redux/features/api/apiSlice";
 import UserInput from "./UserInput";
 import Output from "./Output";
 import MoreTranslations from "./MoreTranslations";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { handleGoogleApi } from "./utils";
-import { languagesG } from "../../consts";
-import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { setMainTranslation } from "../../redux/features/translate/translateSlice";
+import { languagesG } from "@/src/consts";
+import { useAppDispatch, useAppSelector } from "@/src/redux/store";
+import { setMainTranslation } from "@/src/redux/features/translate/translateSlice";
 
 
 export default function TranslateSection() {

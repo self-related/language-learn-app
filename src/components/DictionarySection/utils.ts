@@ -1,4 +1,4 @@
-import { TranslationResult } from "../../types";
+import { TranslationResult } from "@/src/types";
 
 export const sortByName = (words: readonly TranslationResult[] | undefined): TranslationResult[] | undefined => {
     if (!words) return words;

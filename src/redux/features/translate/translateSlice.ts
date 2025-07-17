@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { OtherTranslations } from "../../../types";
-import { loadStateFromLocalStorage, saveToLocalStorage } from "../../utils";
+import { OtherTranslations } from "@/src/types";
+import { loadStateFromLocalStorage, saveToLocalStorage } from "@/src/redux/utils";
 
 interface TranslateSliceState {
     sourceLang: string,

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { markLearned } from "../../redux/features/dictionary/dictionarySlice";
-import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { ContextMenuData, TranslationResult } from "../../types";
+import { markLearned } from "@/src/redux/features/dictionary/dictionarySlice";
+import { useAppDispatch, useAppSelector } from "@/src/redux/store";
+import { ContextMenuData, TranslationResult } from "@/src/types";
 import DictionaryContextMenu from "./DictionaryContextMenu";
 
 interface DictionaryEntryProps {

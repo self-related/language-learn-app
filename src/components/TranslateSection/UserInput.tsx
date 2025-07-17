@@ -1,6 +1,6 @@
-import { setTranslateAutomatically } from "../../redux/features/translate/translateSlice";
-import { setOriginal } from "../../redux/features/translate/translateSlice";
-import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { setTranslateAutomatically } from "@/src/redux/features/translate/translateSlice";
+import { setOriginal } from "@/src/redux/features/translate/translateSlice";
+import { useAppDispatch, useAppSelector } from "@/src/redux/store";
 
 interface UserInputProps {
     onButtonClick: () => void,

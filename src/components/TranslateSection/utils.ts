@@ -1,6 +1,6 @@
-import { GoogleApiRespond } from "../../redux/features/api/types";
-import { Languages, TranslationResult } from "../../types"; 
-import { languagesG } from "../../consts";
+import { GoogleApiRespond } from "@/src/redux/features/api/types";
+import { Languages, TranslationResult } from "@/src/types"; 
+import { languagesG } from "@/src/consts";
 
 
 export function generateDictionaryName (sourceLang: string, targetLang: string, langMap: Languages, detectedLang?: string) {

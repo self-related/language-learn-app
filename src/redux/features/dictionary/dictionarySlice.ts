@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { OtherTranslations, SortBy, Translation, TranslationResult } from "../../../types";
-import { loadStateFromLocalStorage, saveToLocalStorage } from "../../utils";
+import { OtherTranslations, SortBy, Translation, TranslationResult } from "@/src/types";
+import { loadStateFromLocalStorage, saveToLocalStorage } from "@/src/redux/utils";
 
 export interface DictionaryItem {
     sourceLang: string,

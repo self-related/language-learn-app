@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { ContextMenuData, SortBy, TranslationResult } from "../../types";
+import { useAppDispatch, useAppSelector } from "@/src/redux/store";
+import { ContextMenuData, SortBy, TranslationResult } from "@/src/types";
 import Category from "./Category";
 import { sortByName } from "./utils";
-import { setSelectedDictionaryName, setSortBy, switchHideTranslations } from "../../redux/features/dictionary/dictionarySlice";
+import { setSelectedDictionaryName, setSortBy, switchHideTranslations } from "@/src/redux/features/dictionary/dictionarySlice";
 
 /*  ToDo: 
     - move currentDictonary state to redux

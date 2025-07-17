@@ -1,6 +1,6 @@
-import { TranslationResult } from "../../types";
-import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { setMainTranslation } from "../../redux/features/translate/translateSlice";
+import { TranslationResult } from "@/src/types";
+import { useAppDispatch, useAppSelector } from "@/src/redux/store";
+import { setMainTranslation } from "@/src/redux/features/translate/translateSlice";
 import { useCallback } from "react";
 
 interface OutputProps {

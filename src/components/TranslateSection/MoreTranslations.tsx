@@ -1,4 +1,4 @@
-import { OtherTranslations } from "../../types";
+import { OtherTranslations } from "@/src/types";
 
 interface Props {
     otherTranslations: OtherTranslations[] | undefined,

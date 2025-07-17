@@ -1,7 +1,7 @@
-import { setSourceLang, setTargetLang } from "../../redux/features/translate/translateSlice";
-import { swapInputOutputText } from "../../redux/features/translate/translateSlice";
-import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { Languages } from "../../types";
+import { setSourceLang, setTargetLang } from "@/src/redux/features/translate/translateSlice";
+import { swapInputOutputText } from "@/src/redux/features/translate/translateSlice";
+import { useAppDispatch, useAppSelector } from "@/src/redux/store";
+import { Languages } from "@/src/types";
 
 interface LanguageSwitcherProps {
     languages: Languages, // change to get from current API maybe
