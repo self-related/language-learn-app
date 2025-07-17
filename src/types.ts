@@ -49,4 +49,5 @@ export interface ContextMenuData {
     word?: TranslationResult,
     x: number,
     y: number,
+    contextMenuActions: { edit: () => void }
 }

@@ -29,7 +29,7 @@ function App() {
         </main>
 
         {
-            contextMenu && (<DictionaryContextMenu className={`absolute`} y={contextMenu.y} x={contextMenu.x} />)
+            contextMenu && (<DictionaryContextMenu className={`absolute`} y={contextMenu.y} x={contextMenu.x} contextMenuActions={contextMenu.contextMenuActions} />)
         }
 
     </div>

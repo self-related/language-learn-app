@@ -21,6 +21,7 @@ export default function DictionaryEntry({ translation, dictionary, setContextMen
     // Local states
     const [hideTranslation, setHideTranslation] = useState(hideTranslationsSetting);
     const [showDropdown, setShowDropdown] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
     
 
     // Callbacks
@@ -36,6 +37,10 @@ export default function DictionaryEntry({ translation, dictionary, setContextMen
         if (hideTranslationsSetting) {
             setHideTranslation(state => !state);
         }
+    };
+
+    const contextMenuActions = {
+        edit: () => setIsEditing(isEditing => !isEditing),
     };
     
 
@@ -60,7 +65,7 @@ export default function DictionaryEntry({ translation, dictionary, setContextMen
             const x = ev.pageX;
             const y = ev.pageY;
             ev.preventDefault();
-            setContextMenu!({x, y,});
+            setContextMenu!({x, y, contextMenuActions});
         };
 
         currentDictionaryEntryElement?.addEventListener("contextmenu", setContextMenuListener);
@@ -68,6 +73,57 @@ export default function DictionaryEntry({ translation, dictionary, setContextMen
         return () => currentDictionaryEntryElement?.removeEventListener("contextmenu", setContextMenuListener);
     });
     
+
+
+    // TEMP SOLUTION
+    // ToDo: create separate components for return and wrap them
+
+    if (isEditing) {
+        return (
+            <li ref={dictionaryEntryElement}
+                className={`flex bg-[#414343] px-3 py-2 rounded-sm ${translation.learned && "text-gray-400"}`}
+            >
+
+
+                {/* ToDo: 
+                - Button to use current translation in input and output
+                - Button to check other translations (if exist)  
+                */}
+
+                {/* original word + translation */}
+                <div className="w-0 grow flex flex-col justify-around break-words">
+                    {/* original word */}
+                    <p className="">
+                        <span className={`${translation.learned ? "text-green-200" : "text-red-300"}`}>
+                            {sourceLang}:&nbsp;
+                        </span>
+
+                        <input type="text" defaultValue={translation?.original} className="bg-white px-1.5 text-black" />
+                    </p>
+
+                    {/* translation */}
+                    <p className="break-words mt-1">
+                        <span className={`${translation.learned ? "text-green-200" : "text-red-300"}`}>
+                            {targetLang}:&nbsp;
+                        </span>
+                        
+                        <span onClick={handleTranslationClick}
+                            className={`${ hideTranslation ? "blur-xs" : "" } ${hideTranslationsSetting ? "cursor-pointer" : ""}`}
+                        >
+
+                        <input type="text" defaultValue={translation?.mainTranslation} className="bg-white px-1.5 text-black" />
+
+                        </span>
+                    </p>
+
+                    <button onClick={() => setIsEditing(false)}
+                        className="mt-2 w-fit px-0.5 bg-orange-600 hover:bg-orange-400 rounded-sm cursor-pointer" style={{textShadow: "black 0.05rem 0.05rem 0.05rem"}}
+                    >Change</button>
+                </div>
+            </li>
+        );
+    }
+
 
 
     return (
@@ -78,7 +134,7 @@ export default function DictionaryEntry({ translation, dictionary, setContextMen
 
         {/* ToDo: 
         - Button to use current translation in input and output
-        - Button to choose other translations (if exist)  
+        - Button to check other translations (if exist)  
         */}
 
         {/* original word + translation */}
