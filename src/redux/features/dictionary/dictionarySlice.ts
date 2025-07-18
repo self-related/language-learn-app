@@ -45,6 +45,8 @@ export const dictionarySlice = createSlice({
     initialState,
     name: "dictionarySlice",
     reducers: {
+
+        // TODO: fix for payload type <Translation>
         addTranslation: (state: DictionarySliceState, action: PayloadAction<Translation>) => {
             const dictionaryName = action.payload.dictionaryName;
 
@@ -66,6 +68,21 @@ export const dictionarySlice = createSlice({
             }
 
             saveToLocalStorage<DictionarySliceState>(localStorageKey, state);
+        },
+
+        // TODO: fix for payload type <Translation>
+        editTranslation: (state: DictionarySliceState, action: PayloadAction<TranslationResult & { lastOriginal: string }>) => {
+            const editedTranslation = action.payload;
+            const dictionaryName = action.payload.dictionaryName;
+            const existingTranslationIndex = state.dictionaryMap[dictionaryName].findIndex(item => item.original == action.payload.lastOriginal);
+
+            if (existingTranslationIndex >= 0) {
+                const currentTranslation = state.dictionaryMap[dictionaryName][existingTranslationIndex];
+                state.dictionaryMap[dictionaryName][existingTranslationIndex] = {...currentTranslation, ...editedTranslation};
+
+                saveToLocalStorage<DictionarySliceState>(localStorageKey, state);
+            }
+
         },
         deleteTranslation: (state: DictionarySliceState, action) => {
             state.dictionaryMap[action.payload.dictionary] = state.dictionaryMap[action.payload.dictionary].filter(translation => translation.original != action.payload.original);
@@ -111,5 +128,7 @@ export const {
     markLearned,
     setSelectedDictionaryName,
     setSortBy,
-    switchHideTranslations
+    switchHideTranslations,
+    addTranslation,
+    editTranslation
 } = dictionarySlice.actions;

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { markLearned } from "@/src/redux/features/dictionary/dictionarySlice";
+import { addTranslation, editTranslation, markLearned } from "@/src/redux/features/dictionary/dictionarySlice";
 import { useAppDispatch, useAppSelector } from "@/src/redux/store";
 import { ContextMenuData, TranslationResult } from "@/src/types";
 import DictionaryContextMenu from "./DictionaryContextMenu";
@@ -78,6 +78,14 @@ export default function DictionaryEntry({ translation, dictionary, setContextMen
     // TEMP SOLUTION
     // ToDo: create separate components for return and wrap them
 
+    const [original, setOriginal] = useState(translation.original);
+    const [mainTranslation, setMainTranslation] = useState(translation.mainTranslation);
+
+    const handleChangeButtonClick = () => {
+        dispatch(editTranslation({...translation, original, mainTranslation, lastOriginal: translation.original!}));
+        setIsEditing(false);
+    };
+
     if (isEditing) {
         return (
             <li ref={dictionaryEntryElement}
@@ -98,7 +106,11 @@ export default function DictionaryEntry({ translation, dictionary, setContextMen
                             {sourceLang}:&nbsp;
                         </span>
 
-                        <input type="text" defaultValue={translation?.original} className="bg-white px-1.5 text-black" />
+                        <input 
+                            type="text" value={original} 
+                            onInput={(e) => setOriginal(e.currentTarget.value)} 
+                            className="bg-white px-1.5 text-black"
+                        />
                     </p>
 
                     {/* translation */}
@@ -111,12 +123,16 @@ export default function DictionaryEntry({ translation, dictionary, setContextMen
                             className={`${ hideTranslation ? "blur-xs" : "" } ${hideTranslationsSetting ? "cursor-pointer" : ""}`}
                         >
 
-                        <input type="text" defaultValue={translation?.mainTranslation} className="bg-white px-1.5 text-black" />
+                        <input type="text" 
+                            value={mainTranslation} 
+                            onInput={(e) => setMainTranslation(e.currentTarget.value)}
+                            className="bg-white px-1.5 text-black"
+                        />
 
                         </span>
                     </p>
 
-                    <button onClick={() => setIsEditing(false)}
+                    <button onClick={handleChangeButtonClick}
                         className="mt-2 w-fit px-0.5 bg-orange-600 hover:bg-orange-400 rounded-sm cursor-pointer" style={{textShadow: "black 0.05rem 0.05rem 0.05rem"}}
                     >Change</button>
                 </div>

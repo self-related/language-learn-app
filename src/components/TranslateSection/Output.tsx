@@ -23,6 +23,8 @@ export default function Output({ translationResult, onOutputReset}: OutputProps)
 
     const handleAddTranslationClick = () => {
         const originalTrimmed = original.trim();
+
+        // TODO: fix for type <Translation>
         dispatch({ type: "dictionarySlice/addTranslation", payload: {...translationResult, original: originalTrimmed, mainTranslation}} );
     }
 
