@@ -14,8 +14,8 @@ export interface OtherTranslations {
 export interface TranslationResult { // TODO: remove: dictionaryName, learned. Add source language and target language
     learned: boolean;
     dictionaryName: string,
-    original?: string,
-    mainTranslation?: string,
+    original: string,
+    mainTranslation: string,
     otherTranslations?: OtherTranslations[],
     detectedLanguage?: string,
 }
