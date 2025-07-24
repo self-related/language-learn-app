@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { addTranslation, editTranslation, markLearned } from "@/src/redux/features/dictionary/dictionarySlice";
+import { editTranslation, markLearned } from "@/src/redux/features/dictionary/dictionarySlice";
 import { useAppDispatch, useAppSelector } from "@/src/redux/store";
 import { ContextMenuData, TranslationResult } from "@/src/types";
 import DictionaryContextMenu from "./DictionaryContextMenu";
