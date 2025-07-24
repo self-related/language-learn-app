@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { OtherTranslations } from "@/src/types";
+import { OtherTranslations, TranslationResult } from "@/src/types";
 import { loadStateFromLocalStorage, saveToLocalStorage } from "@/src/redux/utils";
+import { languagesG } from "@/src/consts";
 
 interface TranslateSliceState {
     sourceLang: string,
@@ -64,6 +65,31 @@ export const translateSlice = createSlice({
             state.translateAutomatically = action.payload;
             saveToLocalStorage(localStorageKey, state);
         },
+        setDictionaryName: (state: TranslateSliceState, action: PayloadAction<string | undefined>) => {
+            if (action.payload) {
+                state.dictionaryName = action.payload;
+            } else {
+                // TODO: change using currentApi string
+                
+                // if auto, use detected language as sourceLang
+                const sourceLang = state.sourceLang == "auto" 
+                ? state.detectedLanguage ?? ""
+                : state.sourceLang;
+
+                const sourceLangName = languagesG[sourceLang];
+                const targetLangName = languagesG[state.targetLang];
+
+                const dictionaryName = sourceLangName && targetLangName
+                ? `${sourceLangName}-${targetLangName}`
+                : "default";
+
+                state.dictionaryName = dictionaryName;
+            }
+        },
+        syncTranslationResultFromApi: (state: TranslateSliceState, action: PayloadAction<TranslationResult>) => {
+            const { original, mainTranslation, otherTranslations, detectedLanguage, dictionaryName } = action.payload;
+            return { ...state, original, mainTranslation, detectedLanguage, dictionaryName, otherTranslations };
+        },
     }
 });
 
@@ -73,5 +99,7 @@ export const {
     setMainTranslation, 
     setSourceLang, 
     setTargetLang,
-    setTranslateAutomatically
+    setTranslateAutomatically,
+    setDictionaryName,
+    syncTranslationResultFromApi
 } = translateSlice.actions;
