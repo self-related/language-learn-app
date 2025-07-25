@@ -9,7 +9,10 @@ interface TranslateSliceState {
 
     original: string,
     mainTranslation: string,
+    
     dictionaryName: string,
+    customDictionaryName?: string,
+    useCustomDictionaryName: boolean,
 
     otherTranslations?: OtherTranslations[],
     detectedLanguage?: string,
@@ -31,7 +34,8 @@ const initialState: TranslateSliceState = savedState
     original: "",
     mainTranslation: "",
 
-    dictionaryName: "",
+    dictionaryName: "default dictionary",
+    useCustomDictionaryName: false,
 
     translateAutomatically: true,
     
