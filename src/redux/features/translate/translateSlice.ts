@@ -3,7 +3,7 @@ import { OtherTranslations, TranslationResult } from "@/src/types";
 import { loadStateFromLocalStorage, saveToLocalStorage } from "@/src/redux/utils";
 import { languagesG } from "@/src/consts";
 
-interface TranslateSliceState {
+export interface TranslateSliceState {
     sourceLang: string,
     targetLang: string,
 

@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { OtherTranslations, SortBy, Translation, TranslationResult } from "@/src/types";
 import { loadStateFromLocalStorage, saveToLocalStorage } from "@/src/redux/utils";
+import { TranslateSliceState } from "../translate/translateSlice";
 
 export interface DictionaryItem {
     sourceLang: string,
@@ -70,6 +71,51 @@ export const dictionarySlice = createSlice({
             saveToLocalStorage<DictionarySliceState>(localStorageKey, state);
         },
 
+        addDictionaryItem: (state: DictionarySliceState, action: PayloadAction<TranslateSliceState>) => {
+            const {
+                sourceLang,
+                targetLang,
+                detectedLanguage,
+
+                original,
+                mainTranslation,
+                otherTranslations,
+
+                dictionaryName
+                                
+            } = action.payload;
+
+            const newDictionaryItem: DictionaryItem = {
+                sourceLang,
+                targetLang,
+                original,
+                mainTranslation,
+                dictionaryName,
+                detectedLanguage,
+                otherTranslations, 
+                learned: false
+            };
+
+            if (!state.dictionaryMap[dictionaryName]) {
+                state.dictionaryMap[dictionaryName] = [];
+            }
+
+            const existingTranslationIndex = state.dictionaryMap[dictionaryName].findIndex(item => item.original == original);
+
+
+            if (existingTranslationIndex >= 0) {
+                const replacing = window.confirm("This item already exists.\nReplace?");
+               
+                if (replacing) {
+                    state.dictionaryMap[dictionaryName][existingTranslationIndex] = newDictionaryItem;
+                }
+
+            } else {
+                state.dictionaryMap[dictionaryName].unshift(newDictionaryItem);
+            }
+
+        },
+
         // TODO: fix for payload type <Translation>
         editTranslation: (state: DictionarySliceState, action: PayloadAction<TranslationResult & { lastOriginal: string }>) => {
             const editedTranslation = action.payload;
@@ -130,5 +176,7 @@ export const {
     setSortBy,
     switchHideTranslations,
     addTranslation,
-    editTranslation
+    editTranslation,
+    
+    addDictionaryItem
 } = dictionarySlice.actions;
