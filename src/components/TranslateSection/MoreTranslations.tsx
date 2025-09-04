@@ -10,7 +10,7 @@ export default function MoreTranslations( {otherTranslations, onWordClick}: Prop
         <li key={index} className="flex flex-wrap items-center gap-x-1 gap-y-2 mb-3 w-full text-shadow-black-005rem">
                 
                 {/* type of word (Noun, verb, etc) */}
-            <p className="text-white bg-orange-500 px-1 py-0.5 rounded-sm">{entry.pos}s:</p>
+            <p className="text-white bg-orange-500 px-1 py-0.5 rounded-sm" style={{textShadow: "black 0.07rem 0.07rem 0.07rem"}}>{entry.pos}s:</p>
             
                 {/* nested list of translated words one by one */}
             {

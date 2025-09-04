@@ -92,7 +92,7 @@ export default function DictionarySection({ setContextMenu }: Props) {
                 <div className="h-7 flex gap-2">
                      {/* hide button */}
                     <button onClick={() => dispatch(switchHideTranslations())}
-                        className={`h-full px-1 rounded-md ${hideTranslations ? "bg-[#ed9427] hover:bg-orange-300" : "bg-[#606060] hover:bg-[#707070]"}  active:bg-orange-700  cursor-pointer`} style={{textShadow: "black 0.08rem 0.08rem 0.05rem"}}
+                        className={`h-full px-1 rounded-md ${hideTranslations ? "bg-orange-500 hover:bg-orange-300" : "bg-[#606060] hover:bg-[#707070]"}  active:bg-orange-700  cursor-pointer`} style={{textShadow: "black 0.08rem 0.08rem 0.05rem"}}
                     >hide
                     </button>
                     
